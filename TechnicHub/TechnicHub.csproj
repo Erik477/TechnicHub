@@ -16,9 +16,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Chatforum\" />
-    <Folder Include="Views\Infopage\" />
-    <Folder Include="Views\Newsletter\" />
+    <Folder Include="Models\Admin\" />
+    <Folder Include="Models\Chatforum\" />
+    <Folder Include="Models\Home\" />
+    <Folder Include="Models\Infopage\" />
+    <Folder Include="Models\User\" />
+    <Folder Include="Models\Newsletter\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
 </Project>

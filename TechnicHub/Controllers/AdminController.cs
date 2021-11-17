@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TechnicHub.Controllers
 {
-    public class InfoController : Controller
+    public class AdminController : Controller
     {
         public IActionResult Index()
         {
