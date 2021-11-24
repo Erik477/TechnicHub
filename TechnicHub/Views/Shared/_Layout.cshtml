@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TechnicHub</title>
+    <title>@ViewData["Title"] TechnicHub</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -11,29 +11,22 @@
     <header>
         <nav class="navbar navbar-toggleable-sm bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand text-center" asp-area="" asp-controller="Home" asp-action="Index">TechnicHub</a>
-                <button class="navbar-toggler bg-light navbar-brand" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon "></span>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                @*<a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>*@
-                            </li>
-                            @*<li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Chatforum">Chat</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Newsletter">Newsletter</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Infopage">Info</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Shop">Shop</a>
-                            </li>*@
-                        </ul>
+                
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle btn-group" data-toggle="dropdown">
+                        ☰
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                        <a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="User" asp-action="Chatforum">Chat</a>
+                        <a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="User" asp-action="Newsletter">Newsletter</a>
+                        <a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="User" asp-action="Infopage">Info</a>
+                        <a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="User" asp-action="Shop">Shop</a>
                     </div>
-                </button>
+                </div>
+
+                <a id ="logo" class="text-center " asp-area="" asp-controller="Home" asp-action="Index">TechnicHub</a>
+                <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="Profile">Profile</a>
             </div>
         </nav>
     </header>
@@ -45,7 +38,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - TechnicHub - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>>
+            &copy; 2021 - TechnicHub - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

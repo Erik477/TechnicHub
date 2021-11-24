@@ -15,7 +15,7 @@ namespace TechnicHub
         {
             CreateHostBuilder(args).Build().Run();
         }
-        ssdsd
+    
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

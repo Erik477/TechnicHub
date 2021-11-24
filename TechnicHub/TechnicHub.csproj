@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <None Remove="Controllers\NewFile.txt" />
-    <None Remove="Views\ProfileController\NewFile.txt" />
+    <None Remove="Views\Profile\NewFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
