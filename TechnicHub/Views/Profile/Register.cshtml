@@ -7,13 +7,10 @@
 
 <h3>Registration</h3>
 
-<!--- asp-controller ... an welchen Controller soll das Formular gesendet werden
- asp-action ... an welche Methode in diesem Controller
-    Formulare werden zu 99% oer post versendet
-    -->
-<form asp-controller="user" asp-action="registration" method="post">
+
+<form asp-controller="profile" asp-action="registration" method="post">
     <p>
-        <label asp-for="Username"> Benutzername</label> <br />
+        <label class="" asp-for="Username"> Benutzername</label> <br />
         <input type="text" asp-for="Username" />
         <span asp-validation-for="Username"></span>
     </p>
@@ -38,16 +35,16 @@
             <option value="0">männlich</option>
             <option value="1">männlich</option>
             <option value="2">nicht AngegebeN!</option>
-        </select>"
+        </select>
     </p>
 
     </p>
     <p>
-        <input class=""btn btn-primary dropdown-toggle btn-group" type="submit" value='absenden' />
-
-        <inout type="reset" value='abbrechen' />
+        <input  class="btn btn-primary btn-group" type="submit" value='absenden' />
+        <input  class="btn btn-primary btn-group" type="reset" value='abbrechen' />
     </p>
 
-    </
+    
+    @* Hinzufügen der verschiedenen programmiersprachen zum Auswählen bei der Registrierung--> *@
 </form>
 

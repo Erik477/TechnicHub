@@ -14,13 +14,27 @@ a.navbar-brand {
     color: #808080;
     margin: 0 auto;
 }
+.logo:hover{
+    color: white;
+}
 
+.a {
+    color: #FFA31A;
+}
 
 a {
+    color: #FFA31A;
+}
+
+ a:hover {
+        color: #808080;
+ }
+
+title {
     color: #292929;
 }
 
-.btn-primary , .btn-primary::after{
+.btn-primary , .btn-primary::after, .btn-primary:active{
     color: #808080; /*Hellgrau*/
     /* background-color: #292929; Dunkelgrau*/
     background-color: #FFA31A;
@@ -34,7 +48,7 @@ a {
   border-color: #1861ac;
 }
 
-.btn-group:hover, .btn-group:active , .btn-group:after , .btn-group:checked, .btn-group:past{
+.btn-group:hover, .btn-group:active {
     background-color: #FFA31A;
 }
 
@@ -105,9 +119,19 @@ body {
     color: #FFA31A;
 }
 
-a {
-    color: #FFA31A;
+
+
+.login {
+    border: 5px solid #565050;
+    text-align: center;
+    background-color: rgba(51, 49, 50, 0.69);
+    position: absolute;
 }
-a:hover {
-        color: #292929;
-}
+    .login input {
+        border-radius: 5px;
+        width: 300px;
+    }
+
+    p{
+        align-content: baseline;
+    }
