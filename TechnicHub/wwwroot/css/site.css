@@ -4,7 +4,7 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
-    color: #FFA31A;
+    color: #FFA31A; /*Orange*/
 }
 #logo {
     white-space: normal;
@@ -20,12 +20,12 @@ a {
     color: #292929;
 }
 
-.btn-primary {
-    color: #808080;
-    background-color: #292929;
+.btn-primary , .btn-primary::after{
+    color: #808080; /*Hellgrau*/
+    /* background-color: #292929; Dunkelgrau*/
+    background-color: #FFA31A;
     border-color: #FFA31A;
     text-align: center;
-
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -34,7 +34,7 @@ a {
   border-color: #1861ac;
 }
 
-.btn-group:hover, .btn-group:active{
+.btn-group:hover, .btn-group:active , .btn-group:after , .btn-group:checked, .btn-group:past{
     background-color: #FFA31A;
 }
 
@@ -73,14 +73,17 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+
+    
 }
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+    background-color: #292929;
 }
 
 .header {
@@ -100,4 +103,11 @@ body {
 
 .container {
     color: #FFA31A;
+}
+
+a {
+    color: #FFA31A;
+}
+a:hover {
+        color: #292929;
 }
