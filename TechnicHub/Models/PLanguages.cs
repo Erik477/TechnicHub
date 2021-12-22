@@ -7,6 +7,6 @@ namespace TechnicHub.Models
 {
     public enum PLanguages
     {
-        JAVA, Python, C++, C#, Mysql, JavaScript
+        JAVA, Python,  Mysql, JavaScript, CPlusPlus, Csharp, Rust, Kotlin, notSpecified
     }
 }

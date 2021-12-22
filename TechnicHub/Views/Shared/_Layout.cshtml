@@ -17,7 +17,7 @@
                         ☰
                     </button>
                     <div class="dropdown-menu">
-                        <a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                        @*<a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>*@
                         <a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="User" asp-action="Chatforum">Chat</a>
                         <a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="User" asp-action="Newsletter">Newsletter</a>
                         <a class="navbar-brand nav-link text-dark dropdown-item" asp-area="" asp-controller="User" asp-action="Shop">Shop</a>
@@ -27,14 +27,15 @@
 
                 <a id="logo" class="text-center " asp-area="" asp-controller="Home" asp-action="Index">TechnicHub</a>
 
-                @if (true)
+                @*@{ if ((string)Session["name"])*@
                 {
                     <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="LogIn">LogIn</a>
                     <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="Register">Register</a>
-                }else{
+               @* }else{*@
                     <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="Profile">Profile</a>
+                @*}*@
+                 name: @Http.Session["name"]
                 }
-
 
                 
             </div>
