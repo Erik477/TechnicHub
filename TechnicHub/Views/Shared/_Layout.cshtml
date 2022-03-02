@@ -27,17 +27,18 @@
 
                 <a id="logo" class="text-center " asp-area="" asp-controller="Home" asp-action="Index">TechnicHub</a>
 
-                @*@{ if ((string)Session["name"])*@
-                {
-                    <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="LogIn">LogIn</a>
-                    <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="Register">Register</a>
-               @* }else{*@
-                    <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="Profile">Profile</a>
+                @*@{ if ((string)Session["name"])
+                    }*@
+                
+                <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="LogIn">LogIn</a>
+                <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="Register">Register</a>
+                @* }else{*@
+                <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="Profile">Profile</a>
                 @*}*@
                 
                 }
 
-                
+
             </div>
         </nav>
     </header>
