@@ -7,13 +7,10 @@
 
 <h3>Registration</h3>
 
-<!--- asp-controller ... an welchen Controller soll das Formular gesendet werden
- asp-action ... an welche Methode in diesem Controller
-    Formulare werden zu 99% oer post versendet
-    -->
+
 <form asp-controller="profile" asp-action="register" method="post">
     <p>
-        <label asp-for="Username"> Benutzername</label> <br />
+        <label class="" asp-for="Username"> Benutzername</label> <br />
         <input type="text" asp-for="Username" />
         <span asp-validation-for="Username"></span>
     </p>
@@ -36,18 +33,53 @@
 
         <select asp-for=" Gender">
             <option value="0">männlich</option>
-            <option value="1">männlich</option>
-            <option value="2">nicht AngegebeN!</option>
-        </select>"
+            <option value="1">weiblich</option>
+            <option value="2">nicht Angegeben!</option>
+        </select>
+    </p>
+
+    <p>
+        <label asp-for="pLanguage"> P Languages</label> <br />
+
+        <input type="radio" id="JAVA" name="fav_language" value="0" ">
+        <label for="JAVA">JAVA</label><br>
+        <input type="Python" id="Python" name="fav_language" value="1">
+        <label for="Python">Python</label><br>
+        <input type="radio" id="Mysql" name="fav_language" value="2">
+        <label for="Mysql">Mysql</label>
+        <input type="radio" id="JavaScript" name="fav_language" value="3">
+        <label for="JavaScript">JavaScript</label>
+        <input type="radio" id="C++" name="fav_language" value="4">
+        <label for="C++">C++</label>
+        <input type="radio" id="C#" name="fav_language" value="5">
+        <label for="C#">C#</label>
+        <input type="radio" id="Rust" name="fav_language" value="6">
+        <label for="Rust">Rust</label>
+        <input type="radio" id="Kotlin" name="fav_language" value="7">
+        <label for="Kotlin">Kotlin</label>
+        <input type="radio" id="Not specified" name="fav_language" value="8">
+        <label for="Not specified">Not specified</label>
+
+        @*<select asp-for=" pLanguage">
+            <option value="0">JAVA</option>
+            <option value="1">Python</option>
+            <option value="2">Mysql</option>
+            <option value="3">JavaScript</option>
+            <option value="4">C++</option>
+            <option value="5">C#</option>
+            <option value="6">Rust</option>
+            <option value="7">Kotlin</option>
+            <option value="8">Not specified</option>
+        </select>*@
     </p>
 
     </p>
     <p>
-        <input class=""btn btn-primary dropdown-toggle btn-group" type="submit" value='absenden' />
-
-        <inout type="reset" value='abbrechen' />
+        <input class="btn btn-primary btn-group" type="submit" value='absenden' />
+        <input class="btn btn-primary btn-group" type="reset" value='abbrechen' />
     </p>
 
-    </
+
+    @* Hinzufügen der verschiedenen programmiersprachen zum Auswählen bei der Registrierung--> *@
 </form>
 

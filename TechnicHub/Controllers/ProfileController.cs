@@ -9,6 +9,7 @@ using TechnicHub.Models.DB;
 
 namespace TechnicHub.Controllers
 {
+
     public class ProfileController : Controller
    {
    private iRepositoryUsers rep = new RepositoryUsersDB();
@@ -27,6 +28,8 @@ namespace TechnicHub.Controllers
 
         public IActionResult LogIn()
         {
+            HttpContext.Session.SetString(name, "fabian");
+
             return View();
         }
 
