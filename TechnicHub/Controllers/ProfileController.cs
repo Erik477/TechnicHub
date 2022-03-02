@@ -27,7 +27,7 @@ namespace TechnicHub.Controllers
 
         public IActionResult LogIn()
         {
-            HttpContext.Session.SetString(name, "fabian");
+            //HttpContext.Session.SetString(name, "fabian");
 
             return View();
         }
