@@ -1,4 +1,39 @@
-﻿
+﻿@model TechnicHub.Models.Profile;
 
-<h1>LogIn</h1>
+@{
+    ViewData["Title"] = "LogIn";
+}
+
+
+<h3>Registration</h3>
+
+<!--- asp-controller ... an welchen Controller soll das Formular gesendet werden
+ asp-action ... an welche Methode in diesem Controller
+    Formulare werden zu 99% oer post versendet
+    -->
+<form asp-controller="user" asp-action="registration" method="post">
+   
+    <p>
+        <label asp-for="EMail"> E-Mail</label> <br />
+        <input type="email" asp-for="EMail" />
+    </p>
+    <p>
+        <label asp-for="Gender"> Geschlecht</label> <br />
+
+        <select asp-for=" Gender">
+            <option value="0">männlich</option>
+            <option value="1">männlich</option>
+            <option value="2">nicht AngegebeN!</option>
+        </select>"
+    </p>
+
+    </p>
+    <p>
+        <input class="" btn btn-primary dropdown-toggle btn-group" type="submit" value='absenden' />
+
+        <inout type="reset" value='abbrechen' />
+    </p>
+
+    </
+</form>
 
