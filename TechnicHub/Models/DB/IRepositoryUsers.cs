@@ -2,20 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechnicHub.Models;
 
 namespace TechnicHub.Models.DB
 {
-   interface IRepositoryUsers
+    //TODO: asynchrone Programmierung
+    // Vertrag (Interface) wurde erzeugt
+    interface iRepositoryUsers
     {
         void Connect();
         void Disconnect();
 
-        bool Insert(Profile user);
+        //CRUD-Operationen  (Create Read Update Delete)
+        bool Insert(Profile p);
         bool Delete(int userId);
-        bool Update(Profile newUserData);
+        bool Update(int userId, Profile newUserData);
         Profile GetUser(int userId);
         List<Profile> GetAllUsers();
 
-        bool Login(Profile newUserData);
+        //weitere Methoden
+
+       bool Login(string username, string password);
     }
 }

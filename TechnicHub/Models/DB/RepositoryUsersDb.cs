@@ -1,64 +1,64 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Threading.Tasks;
-
+using TechnicHub.Models;
 
 namespace TechnicHub.Models.DB
 {
-    public class RepositoryUsersDb : IRepositoryUsers
+    // diese Klasse implementiert unser Interface
+    public class RepositoryUsersDB : iRepositoryUsers
     {
-        private string _connstring = "Server=localhost;database=TechnicHub;user=root;password=admin";
-
+        private string _connString = "Server=localhost;database=technic_hub;user=root;password=12345";
+     
         private DbConnection _conn;
-
         public void Connect()
         {
-            if (this._conn == null)
+           
+            if(this._conn == null)
             {
-               this._conn = new MySqlConnection(this._connstring);
+                this._conn = new MySqlConnection(this._connString);
             }
-            if (this._conn.State != System.Data.ConnectionState.Open)
+            if(this._conn.State != System.Data.ConnectionState.Open)
             {
+             
                 this._conn.Open();
             }
         }
 
-        public bool Delete(int userId)
-        {
-            if ((this._conn == null) && (this._conn.State != System.Data.ConnectionState.Open))
-            {
-                return false;
-            }
-
-            DbCommand cmdDelete = this._conn.CreateCommand();
-
-            cmdDelete.CommandText = "delete from users where user_id = @userId";
-
-            DbParameter paramUI = cmdDelete.CreateParameter();
-            paramUI.ParameterName = "userId";
-            paramUI.DbType = System.Data.DbType.String;
-            paramUI.Value = userId;
-
-            cmdDelete.Parameters.Add(paramUI);
-
-
-            return cmdDelete.ExecuteNonQuery() == 1;
-        }
-
         public void Disconnect()
         {
-            if (this._conn != null && this._conn.State == System.Data.ConnectionState.Open)
+           if(this._conn != null && this._conn.State == ConnectionState.Open)
             {
                 this._conn.Close();
             }
         }
 
+        public bool Delete(int userId)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+            DbCommand cmdDelete = this._conn.CreateCommand();
+
+            cmdDelete.CommandText = "delete from users where user_id =@id";
+            DbParameter paramId = cmdDelete.CreateParameter();
+            paramId.ParameterName = "id";
+            paramId.DbType = DbType.Int16;
+            paramId.Value = userId;
+
+            cmdDelete.Parameters.Add(paramId);
+            int res =cmdDelete.ExecuteNonQuery();
+            return res ==1;
+
+
+        }
+
         public List<Profile> GetAllUsers()
         {
-            if ((this._conn == null) && (this._conn.State != System.Data.ConnectionState.Open))
+           if((this._conn ==null) && (this._conn.State != ConnectionState.Open))
             {
                 return null;
             }
@@ -66,170 +66,158 @@ namespace TechnicHub.Models.DB
             List<Profile> users = new List<Profile>();
             DbCommand cmdAllUsers = this._conn.CreateCommand();
             cmdAllUsers.CommandText = "select * from users";
-
-            using (DbDataReader reader = cmdAllUsers.ExecuteReader())
-            {
+       
+               using (DbDataReader reader = cmdAllUsers.ExecuteReader())
+                {
                 while (reader.Read())
                 {
-                    users.Add(
-                        new Profile()
-                        {
-                            UserId = Convert.ToInt32(reader["user_id"]),
-                            Username = Convert.ToString(reader["username"]),
-                            Password = Convert.ToString(reader["password"]),
-                            Birthdate = Convert.ToDateTime(reader["birthdate"]),
-                            EMail = Convert.ToString(reader["email"]),
-                            Gender = (Gender)Convert.ToInt32(reader["gender"]),
-                            switch (Convert.ToString(reader["pLanguage"]))
-                            {
-                                case "JAVA":
-                                PLanguages
-                                
-                            }
-                        });
+                    users.Add(new Profile()
+                    {
+                        UserId = Convert.ToInt32(reader["user_id"]),
+                        Username = Convert.ToString(reader["username"]),
+                        Password = Convert.ToString(reader["password"]),
+                        Birthdate = Convert.ToDateTime(reader["birthdate"]),
+                        EMail = Convert.ToString(reader["email"]),
+                        Gender = (Gender)Convert.ToInt32(reader["gender"]),
+
+                    });
                 }
-
-
-            } 
+            }
             return users;
         }
 
         public Profile GetUser(int userId)
         {
-            if ((this._conn == null) && (this._conn.State != System.Data.ConnectionState.Open))
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
                 return null;
             }
+            DbCommand cmdGet = this._conn.CreateCommand();
+            cmdGet.CommandText = "select * from users where user_id = id";
+            DbParameter paramId = cmdGet.CreateParameter();
+            paramId.ParameterName = "id";
+            paramId.DbType = DbType.Int16;
+            paramId.Value = userId;
 
-            Profile users = new Profile();
-            DbCommand cmdAllUsers = this._conn.CreateCommand();
-            cmdAllUsers.CommandText = "select * from users";
-
-
-            using (DbDataReader reader = cmdAllUsers.ExecuteReader())
+            Profile user = null;
+            using (DbDataReader reader = cmdGet.ExecuteReader())
             {
+                while (reader.Read())
+                {
 
-                users.UserId = Convert.ToInt32(reader["user_id"]);
-                users.Username = Convert.ToString(reader["username"]);
-                users.Password = Convert.ToString(reader["password"]);
-                users.Birthdate = Convert.ToDateTime(reader["birthdate"]);
-                users.EMail = Convert.ToString(reader["email"]);
+                     user = new Profile()
+                    {
 
+                        UserId = Convert.ToInt32(reader["user_id"]),
+                        Username = Convert.ToString(reader["username"]),
+                        Password = Convert.ToString(reader["password"]),
+                        Birthdate = Convert.ToDateTime(reader["birthdate"]),
+                        EMail = Convert.ToString(reader["email"]),
+                        Gender = (Gender)Convert.ToInt32(reader["gender"])
 
+                    };
+                }
 
-            } 
-            return users;
-        }
-
+            }
+            return user;
+        }          
         public bool Insert(Profile user)
         {
-            if ((this._conn == null) && (this._conn.State != System.Data.ConnectionState.Open))
+            if( (this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
                 return false;
             }
-            DbCommand cmdInsert = this._conn.CreateCommand();
-            cmdInsert.CommandText = "insert into users values(null, @username, sha2(@password, 512), @bDate, @email)";
+            DbCommand cmdInsert= this._conn.CreateCommand();
+            cmdInsert.CommandText = "insert into users values(null, @username, sha2(@password,512), @bDate, @mail, @gender)";
 
             DbParameter paramUN = cmdInsert.CreateParameter();
+ 
             paramUN.ParameterName = "username";
-            paramUN.DbType = System.Data.DbType.String;
+            paramUN.DbType = DbType.String;
             paramUN.Value = user.Username;
 
             DbParameter paramPWD = cmdInsert.CreateParameter();
             paramPWD.ParameterName = "password";
-            paramPWD.DbType = System.Data.DbType.String;
+            paramPWD.DbType = DbType.String;
             paramPWD.Value = user.Password;
 
-            DbParameter paramBDate = cmdInsert.CreateParameter();
-            paramBDate.ParameterName = "bDate";
-            paramBDate.DbType = System.Data.DbType.Date;
-            paramBDate.Value = user.Birthdate;
+            DbParameter paramBD = cmdInsert.CreateParameter();
+            paramBD.ParameterName = "bDate";
+            paramBD.DbType = DbType.DateTime;
+            paramBD.Value = user.Birthdate;
 
-            DbParameter paramEMail = cmdInsert.CreateParameter();
-            paramEMail.ParameterName = "email";
-            paramEMail.DbType = System.Data.DbType.String;
-            paramEMail.Value = user.EMail;
+            DbParameter paramEmail = cmdInsert.CreateParameter();
+            paramEmail.ParameterName = "mail";
+            paramEmail.DbType = DbType.String;
+            paramEmail.Value = user.EMail;
 
+            DbParameter paramGender =cmdInsert.CreateParameter();
+            paramGender.ParameterName = "gender";
+            paramGender.DbType = DbType.Int32;
+            paramGender.Value = user.Gender;
 
             cmdInsert.Parameters.Add(paramUN);
             cmdInsert.Parameters.Add(paramPWD);
-            cmdInsert.Parameters.Add(paramBDate);
-            cmdInsert.Parameters.Add(paramEMail);
+            cmdInsert.Parameters.Add(paramBD);
+            cmdInsert.Parameters.Add(paramEmail);
+            cmdInsert.Parameters.Add(paramGender);
 
             return cmdInsert.ExecuteNonQuery() == 1;
+           
+
         }
 
-        public bool Login(Profile newUserData)
+        public bool Login(string username, string password)
         {
-            if ((this._conn == null) && (this._conn.State != System.Data.ConnectionState.Open))
+            throw new NotImplementedException();
+        }
+
+        public bool Update(int userId, Profile newUserData)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
                 return false;
             }
-
-            DbCommand cmdLogin = this._conn.CreateCommand();
-
-            cmdLogin.CommandText = "select * from users where username = @username and password = sha2(@password, 512)";
-
-            DbParameter paramUN = cmdLogin.CreateParameter();
-            paramUN.ParameterName = "username";
-            paramUN.DbType = System.Data.DbType.String;
-            paramUN.Value = newUserData.Username;
-
-            DbParameter paramPWD = cmdLogin.CreateParameter();
-            paramPWD.ParameterName = "password";
-            paramPWD.DbType = System.Data.DbType.String;
-            paramPWD.Value = newUserData.Password;
-
-            cmdLogin.Parameters.Add(paramUN);
-            cmdLogin.Parameters.Add(paramPWD);
-
-            return cmdLogin.ExecuteNonQuery() == 1;
-        }
-
-        public bool Update(Profile newUserData)
-        {
-            if ((this._conn == null) && (this._conn.State != System.Data.ConnectionState.Open))
-            {
-                return false;
-            }
-
             DbCommand cmdUpdate = this._conn.CreateCommand();
+            cmdUpdate.CommandText = "update table users set user_id = @id, username = @username," +
+                "password = sha2(@password,512), birthdate = @bDate, email = @mail, gender = @gender where user_id = @id";
 
-            cmdUpdate.CommandText = "update users set username = @username, password = @password,birthdate = @bDate, email = @email, gender = @gender where user_id = @userId";
-
-            DbParameter paramUI = cmdUpdate.CreateParameter();
-
-            paramUI.ParameterName = "userId";
-            paramUI.DbType = System.Data.DbType.String;
-            paramUI.Value = newUserData.UserId;
+            DbParameter paramId = cmdUpdate.CreateParameter();
+            paramId.ParameterName = "id";
+            paramId.DbType = DbType.String;
+            paramId.Value = newUserData.UserId;
 
             DbParameter paramUN = cmdUpdate.CreateParameter();
             paramUN.ParameterName = "username";
-            paramUN.DbType = System.Data.DbType.String;
+            paramUN.DbType = DbType.String;
             paramUN.Value = newUserData.Username;
 
             DbParameter paramPWD = cmdUpdate.CreateParameter();
             paramPWD.ParameterName = "password";
-            paramPWD.DbType = System.Data.DbType.String;
+            paramPWD.DbType = DbType.String;
             paramPWD.Value = newUserData.Password;
 
-            DbParameter paramBDate = cmdUpdate.CreateParameter();
-            paramBDate.ParameterName = "bDate";
-            paramBDate.DbType = System.Data.DbType.Date;
-            paramBDate.Value = newUserData.Birthdate;
+            DbParameter paramBD = cmdUpdate.CreateParameter();
+            paramBD.ParameterName = "bDate";
+            paramBD.DbType = DbType.DateTime;
+            paramBD.Value = newUserData.Birthdate;
 
-            DbParameter paramEMail = cmdUpdate.CreateParameter();
-            paramEMail.ParameterName = "email";
-            paramEMail.DbType = System.Data.DbType.String;
-            paramEMail.Value = newUserData.EMail;
+            DbParameter paramEmail = cmdUpdate.CreateParameter();
+            paramEmail.ParameterName = "mail";
+            paramEmail.DbType = DbType.String;
+            paramEmail.Value = newUserData.EMail;
 
+            DbParameter paramGender = cmdUpdate.CreateParameter();
+            paramGender.ParameterName = "gender";
+            paramGender.DbType = DbType.Int32;
+            paramGender.Value = newUserData.Gender;
 
-            cmdUpdate.Parameters.Add(paramUI);
+            cmdUpdate.Parameters.Add(paramId);
             cmdUpdate.Parameters.Add(paramUN);
             cmdUpdate.Parameters.Add(paramPWD);
-            cmdUpdate.Parameters.Add(paramBDate);
-            cmdUpdate.Parameters.Add(paramEMail);
-
+            cmdUpdate.Parameters.Add(paramBD);
+            cmdUpdate.Parameters.Add(paramEmail);
+            cmdUpdate.Parameters.Add(paramGender);
 
             return cmdUpdate.ExecuteNonQuery() == 1;
         }
