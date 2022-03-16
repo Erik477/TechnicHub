@@ -1,3 +1,61 @@
-﻿
+﻿    *@
+    @model TechnicHub.Models.Profile
 
-<img class ="profile_pic"src="https://www.gravatar.com/avatar/c2deacc8f5487b9de2a9ee0e8c9cc922?s=256&d=identicon&r=PG&f=1" alt="Italian Trulli">
+    @{
+        ViewData["Title"] = "Profil";
+    }
+
+<table>
+    <thead>
+        <tr>
+            <th colspan="7">
+               Your Data
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+
+            <th> Username</th>
+            <th> Birth-Date</th>
+
+            <th> Mail-Adresse</th>
+            <th> Gender</th>
+            <th> Mail</th>
+            <th> Programming Languages</th>
+
+        </tr>
+        @foreach (User u in Model)
+        {
+            <tr>
+                <td>@u.UserId</td>
+                <td>@u.Username</td>
+                <td>@u.Birthdate.ToLongDateString()</td>
+                <td>@u.EMail</td>
+                <td>@u.Gender</td>
+                <td>
+                    <form action="/user/delete/@u.UserId" method="get">
+                        <input type="submit" value="löschen" />
+                    </form>
+                </td>
+                <td>
+                    <form action="/user/update/@u.UserId" method="get">
+                        <input type="submit" value="ändern" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+    <tfoot>
+        <tr colspan="5" style="font-size:80%">
+            registrierten Benutzer
+
+        </tr>
+
+    </tfoot>
+
+
+</table>
+
+    <img class="profile_pic" src="https://www.gravatar.com/avatar/c2deacc8f5487b9de2a9ee0e8c9cc922?s=256&d=identicon&r=PG&f=1" alt="Italian Trulli">

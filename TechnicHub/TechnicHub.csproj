@@ -5,12 +5,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Chatforum\**" />
+    <Compile Remove="Models\Home\**" />
+    <Compile Remove="Models\Infopage\**" />
+    <Compile Remove="Models\Newsletter\**" />
+    <Compile Remove="Models\User\**" />
     <Compile Remove="Views\Home\NewFolder\**" />
     <Compile Remove="Views\NewFolder\**" />
+    <Content Remove="Models\Chatforum\**" />
+    <Content Remove="Models\Home\**" />
+    <Content Remove="Models\Infopage\**" />
+    <Content Remove="Models\Newsletter\**" />
+    <Content Remove="Models\User\**" />
     <Content Remove="Views\Home\NewFolder\**" />
     <Content Remove="Views\NewFolder\**" />
+    <EmbeddedResource Remove="Models\Chatforum\**" />
+    <EmbeddedResource Remove="Models\Home\**" />
+    <EmbeddedResource Remove="Models\Infopage\**" />
+    <EmbeddedResource Remove="Models\Newsletter\**" />
+    <EmbeddedResource Remove="Models\User\**" />
     <EmbeddedResource Remove="Views\Home\NewFolder\**" />
     <EmbeddedResource Remove="Views\NewFolder\**" />
+    <None Remove="Models\Chatforum\**" />
+    <None Remove="Models\Home\**" />
+    <None Remove="Models\Infopage\**" />
+    <None Remove="Models\Newsletter\**" />
+    <None Remove="Models\User\**" />
     <None Remove="Views\Home\NewFolder\**" />
     <None Remove="Views\NewFolder\**" />
   </ItemGroup>
@@ -21,12 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Chatforum\" />
     <Folder Include="Models\DB\scripts\" />
-    <Folder Include="Models\Home\" />
-    <Folder Include="Models\Infopage\" />
-    <Folder Include="Models\User\" />
-    <Folder Include="Models\Newsletter\" />
   </ItemGroup>
 
   <ItemGroup>

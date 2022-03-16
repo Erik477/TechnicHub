@@ -18,7 +18,7 @@
         <span asp-validation-for="Username"></span>
     </p>
     <p>
-        <label asp-for="Password"> Password</label> <br />
+        <label asp-for="Password"> Password</label> <br/>
         <input type="password" asp-for="Password" />
         <span asp-validation-for="Password"></span>
     </p>
@@ -44,23 +44,30 @@
     <p>
         <label asp-for="pLanguage"> P Languages</label> <br />
 
-        <input type="radio" id="JAVA" name="fav_language" value="0" ">
+        <input type="checkbox" id="JAVA" name="fav_language" value="0">
         <label for="JAVA">JAVA</label><br>
-        <input type="Python" id="Python" name="fav_language" value="1">
+
+        <input type="checkbox" id="Python" name="fav_language" value="1">
         <label for="Python">Python</label><br>
-        <input type="radio" id="Mysql" name="fav_language" value="2">
+
+        <input type="checkbox" id="Mysql" name="fav_language" value="2">
         <label for="Mysql">Mysql</label>
-        <input type="radio" id="JavaScript" name="fav_language" value="3">
+
+        <input type="checkbox" id="JavaScript" name="fav_language" value="3">
         <label for="JavaScript">JavaScript</label>
-        <input type="radio" id="C++" name="fav_language" value="4">
+
+        <input type="checkbox" id="C++" name="fav_language" value="4">
         <label for="C++">C++</label>
-        <input type="radio" id="C#" name="fav_language" value="5">
+        <input type="checkbox" id="C#" name="fav_language" value="5">
         <label for="C#">C#</label>
-        <input type="radio" id="Rust" name="fav_language" value="6">
+
+        <input type="checkbox" id="Rust" name="fav_language" value="6">
         <label for="Rust">Rust</label>
-        <input type="radio" id="Kotlin" name="fav_language" value="7">
+
+        <input type="checkbox" id="Kotlin" name="fav_language" value="7">
         <label for="Kotlin">Kotlin</label>
-        <input type="radio" id="Not specified" name="fav_language" value="8">
+
+        <input type="checkbox" id="Not specified" name="fav_language" value="8">
         <label for="Not specified">Not specified</label>
 
         @*<select asp-for=" pLanguage">
@@ -76,7 +83,6 @@
         </select>*@
     </p>
 
-    </p>
     <p>
         <input class="btn btn-primary btn-group" type="submit" value='absenden' />
         <input class="btn btn-primary btn-group" type="reset" value='abbrechen' />

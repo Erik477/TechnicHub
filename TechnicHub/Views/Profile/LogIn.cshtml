@@ -1,4 +1,7 @@
-﻿
+﻿@model TechnicHub.Models.Profile;
+@{
+    ViewData["Title"] = "Login";
+}
 
 <div class="login">
     <h3>LogIn</h3>
@@ -12,6 +15,7 @@
             <label asp-for="EMail"> E-Mail</label> <br />
             <input type="email" asp-for="EMail" />
         </p>
+
 
         <p>
             <label asp-for="Password">Password</label> <br />
@@ -29,4 +33,3 @@
     </form>
 
 </div>
-
