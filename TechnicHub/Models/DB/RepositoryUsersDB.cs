@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Threading.Tasks;
 using TechnicHub.Models;
 
 namespace TechnicHub.Models.DB
 {
     // diese Klasse implementiert unser Interface
-    public class RepositoryUsersDB : iRepositoryUsers
+    public class RepositoryUsersDB : IRepositoryUsers
     {
         private string _connString = "Server=localhost;database=technichub;user=root;password=admin";
      
         private DbConnection _conn;
-        public void Connect()
+        public async Task ConnectAsync()
         {
            
             if(this._conn == null)
@@ -23,19 +24,19 @@ namespace TechnicHub.Models.DB
             if(this._conn.State != System.Data.ConnectionState.Open)
             {
              
-                this._conn.Open();
+               await this._conn.OpenAsync();
             }
         }
 
-        public void Disconnect()
+        public async Task DisconnectAsync()
         {
            if(this._conn != null && this._conn.State == ConnectionState.Open)
             {
-                this._conn.Close();
+                await this._conn.CloseAsync();
             }
         }
 
-        public bool Delete(int userId)
+        public async Task<bool> DeleteAsync(int userId)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
@@ -50,13 +51,13 @@ namespace TechnicHub.Models.DB
             paramId.Value = userId;
 
             cmdDelete.Parameters.Add(paramId);
-            int res =cmdDelete.ExecuteNonQuery();
+            int res = await cmdDelete.ExecuteNonQueryAsync();
             return res ==1;
 
 
         }
 
-        public List<Profile> GetAllUsers()
+        public async Task<List<Profile>> GetAllUsersAsync()
         {
            if((this._conn ==null) && (this._conn.State != ConnectionState.Open))
             {
@@ -67,9 +68,9 @@ namespace TechnicHub.Models.DB
             DbCommand cmdAllUsers = this._conn.CreateCommand();
             cmdAllUsers.CommandText = "select * from users";
        
-               using (DbDataReader reader = cmdAllUsers.ExecuteReader())
+               using (DbDataReader reader = await cmdAllUsers.ExecuteReaderAsync())
                 {
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     users.Add(new Profile()
                     {
@@ -86,7 +87,7 @@ namespace TechnicHub.Models.DB
             return users;
         }
 
-        public Profile GetUser(int userId)
+        public async Task<Profile> GetUserAsync(int userId)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
@@ -100,9 +101,9 @@ namespace TechnicHub.Models.DB
             paramId.Value = userId;
 
             Profile user = null;
-            using (DbDataReader reader = cmdGet.ExecuteReader())
+            using (DbDataReader reader = await cmdGet.ExecuteReaderAsync())
             {
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
 
                      user = new Profile()
@@ -121,7 +122,7 @@ namespace TechnicHub.Models.DB
             }
             return user;
         }          
-        public bool Insert(Profile user)
+        public async Task<bool> InsertAsync(Profile user)
         {
             if( (this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
@@ -162,17 +163,17 @@ namespace TechnicHub.Models.DB
             cmdInsert.Parameters.Add(paramEmail);
             cmdInsert.Parameters.Add(paramGender);
 
-            return cmdInsert.ExecuteNonQuery() == 1;
+            return await cmdInsert.ExecuteNonQueryAsync() == 1;
            
 
         }
 
-        public bool Login(string username, string password)
+        public async Task<bool> LoginAsync(string username, string password)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(int userId, Profile newUserData)
+        public async Task<bool> UpdateAsync(int userId, Profile newUserData)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
@@ -219,7 +220,7 @@ namespace TechnicHub.Models.DB
             cmdUpdate.Parameters.Add(paramEmail);
             cmdUpdate.Parameters.Add(paramGender);
 
-            return cmdUpdate.ExecuteNonQuery() == 1;
+            return await cmdUpdate.ExecuteNonQueryAsync() == 1;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace TechnicHub.Controllers
 
     public class ProfileController : Controller
    {
-   private iRepositoryUsers rep = new RepositoryUsersDB();
+   private IRepositoryUsers rep = new RepositoryUsersDB();
         public IActionResult Activity()
         {
             return View();
@@ -26,50 +26,91 @@ namespace TechnicHub.Controllers
             return View();
         }
 
-        public IActionResult LogIn()
+        public async Task<IActionResult> Login(Profile userDataFromForm)
         {
-            //HttpContext.Session.SetString(name, "fabian");
-
-            return View();
-        }
-
-        public IActionResult Register(Profile userDataFromForm)
-        {
-            //Parameter überprüfen
+            //Paramenter Prüfen
             if (userDataFromForm == null)
             {
                 return RedirectToAction("Registration");
             }
-            //Formulardaten (Registrierungsdaten) überprüfen - Validierung
+
+            //Formulardaten (Registriesungsdaten) überprüfen - validieren
             ValidateRegistrationData(userDataFromForm);
-            //falls alle Daten des Formulars richtig sind
+
+            //falls alle daten des Formulars richtig sind
             if (ModelState.IsValid)
             {
                 try
                 {
-                    rep.Connect();
-                    if (rep.Insert(userDataFromForm))
+                    await rep.ConnectAsync();
+                    if (await rep.LoginAsync(userDataFromForm))
                     {
-                        return View("_Message", new Message("Registrierung", "Ihre Registrierung war erfolgreich!"));
+                        return View("_Message", new Message("LogIn", "Der LogIn war erfolgreich!"));
                     }
-                    else {
-                        return View("_Message", new Message("Registrierung", "Ihre Registrierung war NICHT erfolgreich!", "" +
-                            "Bitte versuchen Sie es später erneut!"));
+                    else
+                    {
+                        return View("_Message", new Message("LogIn", "Der LogIn war NICHT erfolgreich!", "Bitte versuchen Sie es noch einaml!"));
                     }
                 }
-                catch (DbException e)
+                catch (DbException)
                 {
-                    return View("_Message", new Message("Registrierung", "Datenbankfehler!", "" +
-                          "Bitte versuchen Sie es später erneut!"));
+                    return View("_Message", new Message("LogIn", "Datenbankfehler", "Bitte versuchen Sie es später noch eimanl!"));
                 }
                 finally
                 {
-                    rep.Disconnect();
+                    await rep.DisconnectAsync();
                 }
+
+                //Redirect zu einer anderen Methode in einem anderem Controller
+                // return View("_Message", new Message("Registrierung","Ihre Registrierung war erfolgreich"));
             }
-            return View();
+            //Falls das Formular nicht richtig ausgefüllt wurde werden die eingeg. daten erneut angezeigt
+
+            return View(userDataFromForm);
         }
-                private void ValidateRegistrationData(Profile p)
+
+        public async Task<IActionResult> Registration(Profile userDataFromForm)
+        {//Paramenter Prüfen
+            if (userDataFromForm == null)
+            {
+                return RedirectToAction("Registration");
+            }
+
+            //Formulardaten (Registriesungsdaten) überprüfen - validieren
+            ValidateRegistrationData(userDataFromForm);
+
+            //falls alle daten des Formulars richtig sind
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await rep.ConnectAsync();
+                    if (await rep.InsertAsync(userDataFromForm))
+                    {
+                        return View("_Message", new Message("Registrierung", "Ihre Registrierung war erfolgreich!"));
+                    }
+                    else
+                    {
+                        return View("_Message", new Message("Registrierung", "Ihre Registrierung war NICHT erfolgreich!", "Bitte versuchen Sie es später noch eimanl!"));
+                    }
+                }
+                catch (DbException)
+                {
+                    return View("_Message", new Message("Registrierung", "Datenbankfehler", "Bitte versuchen Sie es später noch eimanl!"));
+                }
+                finally
+                {
+                    await rep.DisconnectAsync();
+                }
+
+                //Redirect zu einer anderen Methode in einem anderem Controller
+                // return View("_Message", new Message("Registrierung","Ihre Registrierung war erfolgreich"));
+            }
+            //Falls das Formular nicht richtig ausgefüllt wurde werden die eingeg. daten erneut angezeigt
+
+            return View(userDataFromForm);
+        }
+        private void ValidateRegistrationData(Profile p)
                 {
                     //Parameter überprüfen
                     if (p == null)
