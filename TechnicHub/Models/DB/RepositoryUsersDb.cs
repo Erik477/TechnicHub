@@ -10,7 +10,7 @@ namespace TechnicHub.Models.DB
     // diese Klasse implementiert unser Interface
     public class RepositoryUsersDB : iRepositoryUsers
     {
-        private string _connString = "Server=localhost;database=technic_hub;user=root;password=12345";
+        private string _connString = "Server=localhost;database=technichub;user=root;password=admin";
      
         private DbConnection _conn;
         public void Connect()
