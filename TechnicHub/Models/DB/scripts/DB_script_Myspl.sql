@@ -26,9 +26,17 @@ insert into users values(null, "Werner", sha2("123456789", 512), "2004-01-10", "
 
 select * from users;*/
 
-create table pLanguage(
-	JAVA varchar(100) not null,
-    Python 
+--drop table if exists pLanguage;
+--create table pLanguage(
+--	user_id int unsigned not null auto_increment,
+--	JAVA varchar(1) not null,
+--    Python varchar(1),
+--	MySQL varchar(1),
+--	Javascript varchar(1),
+--	CPlusPlus varchar(1),
+--	Csharp varchar(1),
+--	Rust varchar(1),
+--	Kotlin varchar(1)
 	
-	constraint user_id_PK primary key(user_id)
-);
+--	constraint user_id_PK primary key(user_id)
+--);

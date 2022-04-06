@@ -26,49 +26,57 @@ namespace TechnicHub.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Login(Profile userDataFromForm)
+        //public async Task<IActionResult> Login(Profile userDataFromForm)
+        //{
+        //    //Paramenter Prüfen
+        //    if (userDataFromForm == null)
+        //    {
+        //        return RedirectToAction("Registration");
+        //    }
+
+        //    //Formulardaten (Registriesungsdaten) überprüfen - validieren
+        //    ValidateRegistrationData(userDataFromForm);
+
+        //    //falls alle daten des Formulars richtig sind
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            await rep.ConnectAsync();
+        //            if (await rep.LoginAsync(userDataFromForm))
+        //            {
+        //                return View("_Message", new Message("LogIn", "Der LogIn war erfolgreich!"));
+        //            }
+        //            else
+        //            {
+        //                return View("_Message", new Message("LogIn", "Der LogIn war NICHT erfolgreich!", "Bitte versuchen Sie es noch einaml!"));
+        //            }
+        //        }
+        //        catch (DbException)
+        //        {
+        //            return View("_Message", new Message("LogIn", "Datenbankfehler", "Bitte versuchen Sie es später noch eimanl!"));
+        //        }
+        //        finally
+        //        {
+        //            await rep.DisconnectAsync();
+        //        }
+
+        //        //Redirect zu einer anderen Methode in einem anderem Controller
+        //        // return View("_Message", new Message("Registrierung","Ihre Registrierung war erfolgreich"));
+        //    }
+        //    //Falls das Formular nicht richtig ausgefüllt wurde werden die eingeg. daten erneut angezeigt
+
+        //    return View(userDataFromForm);
+        //}
+        [HttpGet]
+        public IActionResult Registration()
         {
-            //Paramenter Prüfen
-            if (userDataFromForm == null)
-            {
-                return RedirectToAction("Registration");
-            }
-
-            //Formulardaten (Registriesungsdaten) überprüfen - validieren
-            ValidateRegistrationData(userDataFromForm);
-
-            //falls alle daten des Formulars richtig sind
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await rep.ConnectAsync();
-                    if (await rep.LoginAsync(userDataFromForm))
-                    {
-                        return View("_Message", new Message("LogIn", "Der LogIn war erfolgreich!"));
-                    }
-                    else
-                    {
-                        return View("_Message", new Message("LogIn", "Der LogIn war NICHT erfolgreich!", "Bitte versuchen Sie es noch einaml!"));
-                    }
-                }
-                catch (DbException)
-                {
-                    return View("_Message", new Message("LogIn", "Datenbankfehler", "Bitte versuchen Sie es später noch eimanl!"));
-                }
-                finally
-                {
-                    await rep.DisconnectAsync();
-                }
-
-                //Redirect zu einer anderen Methode in einem anderem Controller
-                // return View("_Message", new Message("Registrierung","Ihre Registrierung war erfolgreich"));
-            }
-            //Falls das Formular nicht richtig ausgefüllt wurde werden die eingeg. daten erneut angezeigt
-
-            return View(userDataFromForm);
+            ProfileAndLanguages pl = new ProfileAndLanguages();
+            pl.Profile = new Profile();
+            pl.Languages = new PLanguages();
+            return View(pl);
         }
-
+        [HttpPost]
         public async Task<IActionResult> Registration(Profile userDataFromForm)
         {//Paramenter Prüfen
             if (userDataFromForm == null)

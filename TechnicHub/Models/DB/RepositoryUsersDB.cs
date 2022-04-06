@@ -122,7 +122,7 @@ namespace TechnicHub.Models.DB
             }
             return user;
         }          
-        public async Task<bool> InsertAsync(Profile user)
+        public async Task<bool> InsertAsync(ProfileAndLanguages user)
         {
             if( (this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
@@ -163,6 +163,8 @@ namespace TechnicHub.Models.DB
             cmdInsert.Parameters.Add(paramEmail);
             cmdInsert.Parameters.Add(paramGender);
 
+            //für pLanguages
+            cmdInsert.CommandText = "insert into pLanguage values(null,  JAVA, Python,  MySQL, JavaScript, CPlusPlus, Csharp, Rust, Kotlin)";
             return await cmdInsert.ExecuteNonQueryAsync() == 1;
            
 
@@ -170,7 +172,10 @@ namespace TechnicHub.Models.DB
 
         public async Task<bool> LoginAsync(string username, string password)
         {
-            throw new NotImplementedException();
+            DbCommand cmdInsert = this._conn.CreateCommand();
+            cmdInsert.CommandText = "insert into users values(null, @username, sha2(@password,512), @bDate, @mail, @gender)";
+           return await cmdInsert.ExecuteNonQueryAsync() == 1;
+           
         }
 
         public async Task<bool> UpdateAsync(int userId, Profile newUserData)

@@ -1,4 +1,4 @@
-﻿@model TechnicHub.Models.Profile;
+﻿@model TechnicHub.Models.ProfileAndLanguages;
 
 @{
     ViewData["Title"] = "Register";
@@ -11,7 +11,7 @@
  asp-action ... an welche Methode in diesem Controller
     Formulare werden zu 99% oer post versendet
     -->
-<form asp-controller="profile" asp-action="register" method="post">
+<form asp-controller="profile" asp-action="registration" method="post">
     <p>
         <label class="" asp-for="Username"> Benutzername</label> <br />
         <input type="text" asp-for="Username" />
@@ -42,7 +42,6 @@
     </p>
 
     <p>
-        <label asp-for="pLanguage"> P Languages</label> <br />
 
         <input type="checkbox" id="JAVA" name="fav_language" value="0">
         <label for="JAVA">JAVA</label><br>
