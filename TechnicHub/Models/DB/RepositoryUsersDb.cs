@@ -161,16 +161,31 @@ namespace TechnicHub.Models.DB
             cmdInsert.Parameters.Add(paramPWD);
             cmdInsert.Parameters.Add(paramBD);
             cmdInsert.Parameters.Add(paramEmail);
-            cmdInsert.Parameters.Add(paramGender);
+            cmdInsert.Parameters.Add(paramGender);           
 
+        }
+        public async Task<bool> InsertLanguages(PLanguages language)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+            DbCommand cmdInsert = this._conn.CreateCommand();
+            //für pLanguages
+            cmdInsert.CommandText = "insert into pLanguage values(null, Plang_name)";
+            DbParameter paramLanguage = cmdInsert.CreateParameter();
+            paramLanguage.ParameterName = "gender";
+            paramLanguage.DbType = DbType.Int32;
+            paramLanguage.Value = language.;
             return await cmdInsert.ExecuteNonQueryAsync() == 1;
-           
-
         }
 
         public async Task<bool> LoginAsync(string username, string password)
         {
-            throw new NotImplementedException();
+            DbCommand cmdInsert = this._conn.CreateCommand();
+            cmdInsert.CommandText = "insert into users values(null, @username, sha2(@password,512), @bDate, @mail, @gender)";
+           return await cmdInsert.ExecuteNonQueryAsync() == 1;
+           
         }
 
         public async Task<bool> UpdateAsync(int userId, Profile newUserData)
