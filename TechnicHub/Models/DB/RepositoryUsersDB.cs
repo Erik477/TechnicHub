@@ -161,24 +161,29 @@ namespace TechnicHub.Models.DB
             cmdInsert.Parameters.Add(paramPWD);
             cmdInsert.Parameters.Add(paramBD);
             cmdInsert.Parameters.Add(paramEmail);
-            cmdInsert.Parameters.Add(paramGender);           
+            cmdInsert.Parameters.Add(paramGender);
 
-        }
-        public async Task<bool> InsertLanguages(PLanguages language)
-        {
-            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
-            {
-                return false;
-            }
-            DbCommand cmdInsert = this._conn.CreateCommand();
-            //für pLanguages
-            cmdInsert.CommandText = "insert into pLanguage values(null, Plang_name)";
-            DbParameter paramLanguage = cmdInsert.CreateParameter();
-            paramLanguage.ParameterName = "gender";
-            paramLanguage.DbType = DbType.Int32;
-            paramLanguage.Value = language.;
+
+           //einfüllen in zwischentabelle
+            cmdInsert.CommandText = "insert into users zwTable(null, )";
             return await cmdInsert.ExecuteNonQueryAsync() == 1;
         }
+        //public async Task<bool> InsertLanguages(String name)
+        //{
+        //    if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+        //    {
+        //        return false;
+        //    }
+        //    DbCommand cmdInsert = this._conn.CreateCommand();
+        //    //für pLanguages
+        //    cmdInsert.CommandText = "insert into pLanguage values(null, @name)";
+        //    DbParameter paramLanguage = cmdInsert.CreateParameter();
+
+        //    paramLanguage.ParameterName = "name";
+        //    paramLanguage.DbType = DbType.String;
+        //    paramLanguage.Value = name;
+        //    return await cmdInsert.ExecuteNonQueryAsync() == 1;
+
 
         public async Task<bool> LoginAsync(Profile p)
         {
