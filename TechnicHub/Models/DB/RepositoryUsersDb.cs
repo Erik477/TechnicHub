@@ -180,7 +180,7 @@ namespace TechnicHub.Models.DB
             return await cmdInsert.ExecuteNonQueryAsync() == 1;
         }
 
-        public async Task<bool> LoginAsync(string username, string password)
+        public async Task<bool> LoginAsync(Profile p)
         {
             DbCommand cmdInsert = this._conn.CreateCommand();
             cmdInsert.CommandText = "insert into users values(null, @username, sha2(@password,512), @bDate, @mail, @gender)";

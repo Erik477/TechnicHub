@@ -27,12 +27,9 @@ namespace TechnicHub
             services.AddControllersWithViews();
             services.AddDistributedMemoryCache(); // <- This service
 
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
+            services.AddMvc().AddSessionStateTempDataProvider();
+            services.AddSession();
+   
 
         }
 
