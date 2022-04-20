@@ -168,7 +168,7 @@ namespace TechnicHub.Models.DB
 
         }
 
-        public async Task<bool> LoginAsync(string username, string password)
+        public async Task<bool> LoginAsync(Profile p)
         {
             throw new NotImplementedException();
         }

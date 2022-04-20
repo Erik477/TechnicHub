@@ -24,11 +24,36 @@ insert into users values(null, "julia", sha2("djkagvsdöogh!", 512), "2004-01-10
 
 insert into users values(null, "Werner", sha2("123456789", 512), "2004-01-10", "w.x@gmail.com", 1); 
 
-select * from users;*/
+select * from users;
 
 create table pLanguage(
-	JAVA varchar(100) not null,
-    Python 
-	
-	constraint user_id_PK primary key(user_id)
+	Plang_id int unsigned not null auto_increment,
+    Plang_name varchar(100),	
+	constraint Plang_id_PK primary key(Plang_id)
 );
+
+insert into pLanguage values(null, "JAVA");
+insert into pLanguage values(null, "Python");
+insert into pLanguage values(null, "MySQL");
+insert into pLanguage values(null, "JavaScript");
+insert into pLanguage values(null, "CPlusPlus");
+insert into pLanguage values(null, "Csharp");
+insert into pLanguage values(null, "Rust");
+insert into pLanguage values(null, "Kotlin");
+
+select * from pLanguage;
+
+*/
+
+create table zwTable(
+user_id int unsigned not null,
+Plang_id int unsigned not null,
+CONSTRAINT zwTable_user foreign key (user_id) references users(user_id),
+CONSTRAINT zwTable_PLang foreign key (Plang_id) references pLanguage(Plang_id),
+CONSTRAINT zwTable_unique UNIQUE (Plang_id,user_id)
+);
+
+select * from zwTable;
+
+
+    

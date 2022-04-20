@@ -22,6 +22,6 @@ namespace TechnicHub.Models.DB
 
         //weitere Methoden
 
-       Task<bool> LoginAsync(string username, string password);
+       Task<bool> LoginAsync(Profile p);
     }
 }
