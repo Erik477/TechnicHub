@@ -1,4 +1,6 @@
 ﻿
+    @model List<TechnicHub.Models.Profile>
+
 @model TechnicHub.Models.Profile
 @{
     ViewData["Title"] = "Profil";
@@ -24,7 +26,7 @@
             <th> Programming Languages</th>
 
         </tr>
-        @foreach (Profile u in Model)
+        @foreach (User u in Model)
         {
             <tr>
                 <td>@u.UserId</td>

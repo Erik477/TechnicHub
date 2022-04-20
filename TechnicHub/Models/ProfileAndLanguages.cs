@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace TechnicHub.Models
 {
-    public enum PLanguages
+    public class ProfileAndLanguages
     {
-        JAVA, Python,  MySQL, JavaScript, CPlusPlus, Csharp, Rust, Kotlin, notSpecified
+        public Profile Profile { get; set; }
+        public PLanguages Languages { get; set; }
     }
 }

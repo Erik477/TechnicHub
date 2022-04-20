@@ -1,4 +1,4 @@
-﻿@model TechnicHub.Models.Profile;
+﻿@model TechnicHub.Models.ProfileAndLanguages;
 
 @{
     ViewData["Title"] = "Register";
@@ -11,7 +11,7 @@
  asp-action ... an welche Methode in diesem Controller
     Formulare werden zu 99% oer post versendet
     -->
-<form asp-controller="profile" asp-action="register" method="post">
+<form asp-controller="profile" asp-action="registration" method="post">
     <p>
         <label class="" asp-for="Username"> Benutzername</label> <br />
         <input type="text" asp-for="Username" />
@@ -42,30 +42,29 @@
     </p>
 
     <p>
-        <label asp-for="pLanguage"> P Languages</label> <br />
 
         <input type="checkbox" id="JAVA" name="fav_language" value="0">
-        <label for="JAVA">JAVA</label><br>
+        <label for="0">JAVA</label><br>
 
         <input type="checkbox" id="Python" name="fav_language" value="1">
-        <label for="Python">Python</label><br>
+        <label for="1">Python</label><br>
 
         <input type="checkbox" id="Mysql" name="fav_language" value="2">
-        <label for="Mysql">Mysql</label>
+        <label for="2">Mysql</label>
 
         <input type="checkbox" id="JavaScript" name="fav_language" value="3">
-        <label for="JavaScript">JavaScript</label>
+        <label for="3">JavaScript</label>
 
         <input type="checkbox" id="C++" name="fav_language" value="4">
-        <label for="C++">C++</label>
+        <label for="4">C++</label>
         <input type="checkbox" id="C#" name="fav_language" value="5">
-        <label for="C#">C#</label>
+        <label for="5">C#</label>
 
         <input type="checkbox" id="Rust" name="fav_language" value="6">
-        <label for="Rust">Rust</label>
+        <label for="6">Rust</label>
 
         <input type="checkbox" id="Kotlin" name="fav_language" value="7">
-        <label for="Kotlin">Kotlin</label>
+        <label for="7">Kotlin</label>
 
         <input type="checkbox" id="Not specified" name="fav_language" value="8">
         <label for="Not specified">Not specified</label>
