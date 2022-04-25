@@ -122,7 +122,7 @@ namespace TechnicHub.Models.DB
             }
             return user;
         }          
-        public async Task<bool> InsertAsync(Profile user)
+        public async Task<bool> InsertUserAsync(Profile user)
         {
             if( (this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
@@ -161,10 +161,11 @@ namespace TechnicHub.Models.DB
             cmdInsert.Parameters.Add(paramPWD);
             cmdInsert.Parameters.Add(paramBD);
             cmdInsert.Parameters.Add(paramEmail);
-            cmdInsert.Parameters.Add(paramGender);           
+            cmdInsert.Parameters.Add(paramGender);
 
+            return await cmdInsert.ExecuteNonQueryAsync() == 1;
         }
-        public async Task<bool> InsertLanguages(PLanguages language)
+        public async Task<bool> InsertLanguagesAsync(PLanguages language, int user_id)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
@@ -172,14 +173,32 @@ namespace TechnicHub.Models.DB
             }
             DbCommand cmdInsert = this._conn.CreateCommand();
             //für pLanguages
-            cmdInsert.CommandText = "insert into pLanguage values(null, Plang_name)";
+            cmdInsert.CommandText = "insert into pLanguage values(@user_id, @Plang_name)";
+            DbParameter paramUser = cmdInsert.CreateParameter();
+            paramUser.ParameterName = "user_id";
+            paramUser.DbType = DbType.Int32;
+            paramUser.Value = user_id;
+
             DbParameter paramLanguage = cmdInsert.CreateParameter();
-            paramLanguage.ParameterName = "gender";
-            paramLanguage.DbType = DbType.Int32;
-            paramLanguage.Value = language.;
+            paramLanguage.ParameterName = "Plang_name";
+            paramLanguage.DbType = DbType.String;
+            paramLanguage.Value = language.Plang_name;
+
+            cmdInsert.Parameters.Add(paramUser);
+            cmdInsert.Parameters.Add(paramLanguage);
+
             return await cmdInsert.ExecuteNonQueryAsync() == 1;
         }
+        public async Task<bool> InsertAsync(ProfileAndLanguages pl)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
 
+            InsertUserAsync(pl.Profile);
+            InsertLanguagesAsync(pl.Languages, pl.Profile.UserId);
+        }
         public async Task<bool> LoginAsync(Profile p)
         {
             DbCommand cmdInsert = this._conn.CreateCommand();
