@@ -13,7 +13,7 @@
     -->
 <form asp-controller="profile" asp-action="registration" method="post">
     <p>
-        <label class="" asp-for="Username"> Benutzername</label> <br />
+        <label asp-for="Username"> Benutzername</label> <br />
         <input type="text" asp-for="Username" />
         <span asp-validation-for="Username"></span>
     </p>
@@ -43,7 +43,7 @@
 
     <p>
 
-        <input type="checkbox" id="JAVA" name="fav_language" value="0">
+        <input type="checkbox" id="JAVA" asp-for="" value="0">
         <label for="0">JAVA</label><br>
 
         <input type="checkbox" id="Python" name="fav_language" value="1">

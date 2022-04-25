@@ -14,9 +14,13 @@ namespace TechnicHub.Models.DB
         Task DisconnectAsync();
 
         //CRUD-Operationen  (Create Read Update Delete)
-        Task<bool> InsertAsync(Profile p);
+        Task<bool> InsertAsync(ProfileAndLanguages p);
+        Task<bool> InsertLangAsync(int user_id, ProfileAndLanguages user);
+        Task<bool> InsertProfileAsync(ProfileAndLanguages user);
         Task<bool> DeleteAsync(int userId);
-        Task<bool> UpdateAsync(int userId, Profile newUserData);
+        Task<bool> UpdateAsync(int userId, ProfileAndLanguages newUserData);
+
+        
         Task<Profile> GetUserAsync(int userId);
         Task<List<Profile>> GetAllUsersAsync();
 

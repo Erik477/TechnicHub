@@ -1,4 +1,6 @@
-﻿using TechnicHub.Models;
+﻿
+
+using TechnicHub.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -77,7 +79,7 @@ namespace TechnicHub.Controllers
             return View(pl);
         }
         [HttpPost]
-        public async Task<IActionResult> Registration(Profile userDataFromForm)
+        public async Task<IActionResult> Registration(ProfileAndLanguages userDataFromForm)
         {//Paramenter Prüfen
             if (userDataFromForm == null)
             {
@@ -118,7 +120,7 @@ namespace TechnicHub.Controllers
 
             return View(userDataFromForm);
         }
-        private void ValidateRegistrationData(Profile p)
+        private void ValidateRegistrationData(ProfileAndLanguages p)
                 {
                     //Parameter überprüfen
                     if (p == null)
@@ -126,19 +128,19 @@ namespace TechnicHub.Controllers
                         return;
                     }
                     //Username
-                    if ((p.Username == null) || (p.Username.Trim().Length < 4))
+                    if ((p.Profile.Username == null) || (p.Profile.Username.Trim().Length < 4))
                     {
                         ModelState.AddModelError("Username", "Der Benutzername muss mindestens 4 Zeichen lang sein!");
                     }
                     //Password
-                    if ((p.Password == null) || (p.Password.Length < 8))
+                    if ((p.Profile.Password == null) || (p.Profile.Password.Length < 8))
                     {
                         ModelState.AddModelError("Password", "Das Passwort muss mindestens 8 Zeichen lang sein!");
                     }
                     //+ mind. ein Großbuchstabe, + mind. ein Kleinbuchstabe,
                     //+ mind. ein Sonderzeichen, + // mind. eine Zahl
                     //Birthdate
-                    if (p.Birthdate >= DateTime.Now)
+                    if (p.Profile.Birthdate >= DateTime.Now)
                     {
                         ModelState.AddModelError("Birthdate", "Das Geburtsdatum kann nicht in der Zukunft liegen!   ");
                     }

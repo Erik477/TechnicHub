@@ -25,7 +25,7 @@ namespace TechnicHub.Models
         public DateTime Birthdate { get; set; }
         public string EMail { get; set; }
         public Gender Gender { get; set; }
-        public PLanguages pLanguage { get; set; }
+       
         
 
     }

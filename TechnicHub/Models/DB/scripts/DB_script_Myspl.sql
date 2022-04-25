@@ -43,7 +43,7 @@ insert into pLanguage values(null, "Kotlin");
 
 select * from pLanguage;
 
-*/
+
 
 create table zwTable(
 user_id int unsigned not null,
@@ -53,6 +53,7 @@ CONSTRAINT zwTable_PLang foreign key (Plang_id) references pLanguage(Plang_id),
 CONSTRAINT zwTable_unique UNIQUE (Plang_id,user_id)
 );
 
+*/
 select * from zwTable;
 
 

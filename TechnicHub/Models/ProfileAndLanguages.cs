@@ -8,6 +8,6 @@ namespace TechnicHub.Models
     public class ProfileAndLanguages
     {
         public Profile Profile { get; set; }
-        public PLanguages Languages { get; set; }
+        public List<PLanguages> Languages { get; set; }
     }
 }
