@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using TechnicHub.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +18,18 @@ namespace TechnicHub.Controllers
         {
             return View();
         }
+        [HttpGet]
         public IActionResult Chatforum()
         {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Chatforum(ChatPost p)
+        {
+            if (p == null)
+            {
+                return RedirectToAction("Chatforum");
+            }
             return View();
         }
         public IActionResult Newsletter()

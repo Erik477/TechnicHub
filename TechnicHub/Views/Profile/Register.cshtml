@@ -13,28 +13,28 @@
     -->
 <form asp-controller="profile" asp-action="registration" method="post">
     <p>
-        <label asp-for="Username"> Benutzername</label> <br />
-        <input type="text" asp-for="Username" />
-        <span asp-validation-for="Username"></span>
+        <label asp-for="Profile.Username"> Benutzername</label> <br />
+        <input type="text" asp-for="Profile.Username" />
+        <span asp-validation-for="Profile.Username"></span>
     </p>
     <p>
-        <label asp-for="Password"> Password</label> <br/>
-        <input type="password" asp-for="Password" />
-        <span asp-validation-for="Password"></span>
+        <label asp-for="Profile.Password"> Password</label> <br/>
+        <input type="password" asp-for="Profile.Password" />
+        <span asp-validation-for="Profile.Password"></span>
     </p>
     <p>
-        <label asp-for="Birthdate"> Geburtsdatum</label> <br />
-        <input type="date" asp-for="Birthdate" />
-        <span asp-validation-for="Birthdate"></span>
+        <label asp-for="Profile.Birthdate"> Geburtsdatum</label> <br />
+        <input type="date" asp-for="Profile.Birthdate" />
+        <span asp-validation-for="Profile.Birthdate"></span>
     </p>
     <p>
-        <label asp-for="EMail"> E-Mail</label> <br />
-        <input type="email" asp-for="EMail" />
+        <label asp-for="Profile.EMail"> E-Mail</label> <br />
+        <input type="email" asp-for="Profile.EMail" />
     </p>
     <p>
-        <label asp-for="Gender"> Geschlecht</label> <br />
+        <label asp-for="Profile.Gender"> Geschlecht</label> <br />
 
-        <select asp-for=" Gender">
+        <select asp-for="Profile.Gender">
             <option value="0">männlich</option>
             <option value="1">weiblich</option>
             <option value="2">nicht Angegeben!</option>
@@ -43,9 +43,9 @@
 
     <p>
 
-        <input type="checkbox" id="JAVA" asp-for="" value="0">
+        <input type="checkbox" id="JAVA" asp-for="Languages" value="0">
         <label for="0">JAVA</label><br>
-
+         
         <input type="checkbox" id="Python" name="fav_language" value="1">
         <label for="1">Python</label><br>
 

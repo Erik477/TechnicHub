@@ -165,7 +165,7 @@ namespace TechnicHub.Models.DB
 
             return await cmdInsert.ExecuteNonQueryAsync() == 1;
         }
-        public async Task<bool> InsertLanguagesAsync(PLanguages language, int user_id)
+        public async Task<bool> InsertLanguagesAsync(List<PLanguages> language, int user_id)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
@@ -181,8 +181,8 @@ namespace TechnicHub.Models.DB
 
             DbParameter paramLanguage = cmdInsert.CreateParameter();
             paramLanguage.ParameterName = "Plang_name";
-            paramLanguage.DbType = DbType.String;
-            paramLanguage.Value = language.Plang_name;
+            paramLanguage.DbType = DbType.Int32;
+            paramLanguage.Value = language;
 
             cmdInsert.Parameters.Add(paramUser);
             cmdInsert.Parameters.Add(paramLanguage);
@@ -196,14 +196,66 @@ namespace TechnicHub.Models.DB
                 return false;
             }
 
-            InsertUserAsync(pl.Profile);
-            InsertLanguagesAsync(pl.Languages, pl.Profile.UserId);
+            bool user = await InsertUserAsync(pl.Profile);
+
+            if (user)
+            {
+                int user_id = await GetUserIdAsync(pl.Profile.Username);
+                bool lang = await InsertLanguagesAsync(pl.Languages, user_id);
+                return lang;
+            }
+            else
+            {
+                return false;
+            }
         }
+
+        public async Task<int> GetUserIdAsync(string username)
+        {
+            DbCommand cmdGet = this._conn.CreateCommand();
+            cmdGet.CommandText = "select user_id from users where username = @username";
+            DbParameter paramUN = cmdGet.CreateParameter();
+            paramUN.ParameterName = "username";
+            paramUN.DbType = DbType.String;
+            paramUN.Value = username;
+
+            cmdGet.Parameters.Add(paramUN);
+
+            int user_id = 0;
+            using (DbDataReader reader = await cmdGet.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    user_id = Convert.ToInt32(reader["user_id"]);
+                }
+            }
+            return user_id;
+        }
+        
         public async Task<bool> LoginAsync(Profile p)
         {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+
             DbCommand cmdInsert = this._conn.CreateCommand();
-            cmdInsert.CommandText = "insert into users values(null, @username, sha2(@password,512), @bDate, @mail, @gender)";
-           return await cmdInsert.ExecuteNonQueryAsync() == 1;
+            cmdInsert.CommandText = "select * from users where username = @username and password = sha2(@password,512)";
+
+            DbParameter paramUN = cmdInsert.CreateParameter();
+            paramUN.ParameterName = "username";
+            paramUN.DbType = DbType.String;
+            paramUN.Value = p.Username;
+
+            DbParameter paramPWD = cmdInsert.CreateParameter();
+            paramPWD.ParameterName = "password";
+            paramPWD.DbType = DbType.String;
+            paramPWD.Value = p.Password;
+
+            cmdInsert.Parameters.Add(paramUN);
+            cmdInsert.Parameters.Add(paramPWD);
+
+            return await cmdInsert.ExecuteNonQueryAsync() == 1;
            
         }
 

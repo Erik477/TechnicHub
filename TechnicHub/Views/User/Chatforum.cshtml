@@ -1,7 +1,15 @@
-﻿
+﻿@model TechnicHub.Models.ProfileAndLanguages;
+
 @{
     ViewData["Title"] = "View";
 }
 
-<h1>Now talk</h1>
 
+<form asp-controller="user" asp-action="chatforum" method="post">
+    <p>
+        <label asp-for="Profile.Username"> Benutzername</label> <br />
+        <input type="text" asp-for="Profile.Username" />
+        <span asp-validation-for="Profile.Username"></span>
+    </p>
+
+</form>

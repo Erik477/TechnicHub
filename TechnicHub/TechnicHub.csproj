@@ -37,6 +37,8 @@
 
   <ItemGroup>
     <None Remove="Controllers\NewFile.txt" />
+    <None Remove="Models\NewFile.txt" />
+    <None Remove="Views\Home\NewFile.txt" />
     <None Remove="Views\Profile\NewFile.txt" />
   </ItemGroup>
 
