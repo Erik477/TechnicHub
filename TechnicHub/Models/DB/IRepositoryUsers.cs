@@ -20,5 +20,6 @@ namespace TechnicHub.Models.DB
         Task<bool> InsertLanguagesAsync(List<PLanguages> language, int user_id);
         Task<int> GetUserIdAsync(string username);
         Task<bool> LoginAsync(Profile p);
+        Task<bool> InsertPostAsync(Chatpost post);
     }
 }
