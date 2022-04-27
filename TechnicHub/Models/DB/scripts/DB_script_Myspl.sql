@@ -53,8 +53,22 @@ CONSTRAINT zwTable_PLang foreign key (Plang_id) references pLanguage(Plang_id),
 CONSTRAINT zwTable_unique UNIQUE (Plang_id,user_id)
 );
 
-*/
+
 select * from zwTable;
 
+
+
+create table posts(
+	PostId int unsigned not null auto_increment,
+	Message varchar(3000) not null,
+	Post_date  date null,
+	UserId varchar(256) not null,
+	Chatroom int not null,
+	constraint PostId_pk primary key(PostId)
+);
+
+select * from posts;
+
+*/
 
     

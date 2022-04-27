@@ -1,7 +1,7 @@
 ﻿@model TechnicHub.Models.ProfileAndLanguages;
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registration";
 }
 
 
@@ -11,7 +11,7 @@
  asp-action ... an welche Methode in diesem Controller
     Formulare werden zu 99% oer post versendet
     -->
-<form asp-controller="profile" asp-action="registration" method="post">
+<form asp-controller="profile" asp-action="Registration" method="post">
     <p>
         <label asp-for="Profile.Username"> Benutzername</label> <br />
         <input type="text" asp-for="Profile.Username" />
@@ -44,29 +44,30 @@
     <p>
 
         <input type="checkbox" id="JAVA" asp-for="Languages" value="0">
-        <label for="0">JAVA</label><br>
+        <label asp-for="Languages">JAVA</label><br>
          
-        <input type="checkbox" id="Python" name="fav_language" value="1">
+        
+        <input type="checkbox" id="Python" asp-for="Languages" value="1">
         <label for="1">Python</label><br>
 
-        <input type="checkbox" id="Mysql" name="fav_language" value="2">
+        <input type="checkbox" id="Mysql" asp-for="Languages" value="2">
         <label for="2">Mysql</label>
 
-        <input type="checkbox" id="JavaScript" name="fav_language" value="3">
+        <input type="checkbox" id="JavaScript" asp-for="Languages" value="3">
         <label for="3">JavaScript</label>
 
-        <input type="checkbox" id="C++" name="fav_language" value="4">
+        <input type="checkbox" id="C++" asp-for="Languages" value="4">
         <label for="4">C++</label>
-        <input type="checkbox" id="C#" name="fav_language" value="5">
+        <input type="checkbox" id="C#"asp-for="Languages" value="5">
         <label for="5">C#</label>
-
-        <input type="checkbox" id="Rust" name="fav_language" value="6">
+        
+        <input type="checkbox" id="Rust" asp-for="Languages" value="6">
         <label for="6">Rust</label>
 
-        <input type="checkbox" id="Kotlin" name="fav_language" value="7">
+        <input type="checkbox" id="Kotlin" asp-for="Languages" value="7">
         <label for="7">Kotlin</label>
 
-        <input type="checkbox" id="Not specified" name="fav_language" value="8">
+        <input type="checkbox" id="Not specified" asp-for="Languages" value="8">
         <label for="Not specified">Not specified</label>
 
         @*<select asp-for=" pLanguage">

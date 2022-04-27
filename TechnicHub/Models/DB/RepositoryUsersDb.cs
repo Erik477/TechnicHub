@@ -308,5 +308,48 @@ namespace TechnicHub.Models.DB
 
             return await cmdUpdate.ExecuteNonQueryAsync() == 1;
         }
+
+        public async Task<bool> InsertPostAsync(Chatpost post)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+
+            int UserId = await GetUserIdAsync("erik");
+
+            DbCommand cmdInsert = this._conn.CreateCommand();
+            
+            cmdInsert.CommandText = "insert into posts values(null, @Message, @Post_date, @UserId, @Chatroom)";
+
+            DbParameter paramMessage = cmdInsert.CreateParameter();
+            paramMessage.ParameterName = "Message";
+            paramMessage.DbType = DbType.String;
+            paramMessage.Value = post.ChatpostMessage;
+
+            DbParameter paramDate = cmdInsert.CreateParameter();
+            paramDate.ParameterName = "Post_date";
+            paramDate.DbType = DbType.DateTime;
+            paramDate.Value = DateTime.Now;
+
+            DbParameter paramUser = cmdInsert.CreateParameter();
+            paramUser.ParameterName = "UserId";
+            paramUser.DbType = DbType.Int32;
+            paramUser.Value = UserId;
+
+            DbParameter paramChatroomId = cmdInsert.CreateParameter();
+            paramChatroomId.ParameterName = "Chatroom";
+            paramChatroomId.DbType = DbType.Int32;
+            paramChatroomId.Value = 2;
+
+            cmdInsert.Parameters.Add(paramMessage);
+            cmdInsert.Parameters.Add(paramDate);
+            cmdInsert.Parameters.Add(paramUser);
+            cmdInsert.Parameters.Add(paramChatroomId);
+
+            return await cmdInsert.ExecuteNonQueryAsync() == 1;
+
+        }
     }
 }
+

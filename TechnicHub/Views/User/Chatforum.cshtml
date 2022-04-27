@@ -1,4 +1,4 @@
-﻿@model TechnicHub.Models.ProfileAndLanguages;
+﻿@model TechnicHub.Models.Chatpost;
 
 @{
     ViewData["Title"] = "View";
@@ -6,10 +6,24 @@
 
 
 <form asp-controller="user" asp-action="chatforum" method="post">
-    <p>
-        <label asp-for="Profile.Username"> Benutzername</label> <br />
-        <input type="text" asp-for="Profile.Username" />
-        <span asp-validation-for="Profile.Username"></span>
+    <p> 
+        <label asp-for="ChatpostMessage"> Nachricht</label> <br />
+        <input type="text" asp-for="ChatpostMessage" />
+        <span asp-validation-for="ChatpostMessage"></span>  
+       
+        <input type="submit" value="Senden" />
+
     </p>
 
 </form>
+
+<br /><br />
+
+<div>
+  
+   @* <p>@Model.ChatpostUser schrieb: </p>
+    <br/>
+    <p>@Model.ChatpostMessage</p>*@
+
+
+</div>
