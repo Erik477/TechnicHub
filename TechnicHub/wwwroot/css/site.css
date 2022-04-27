@@ -34,11 +34,11 @@ title {
     color: #292929;
 }
 
-.btn-primary , .btn-primary::after, .btn-primary:active{
-    color: #808080; /*Hellgrau*/
+.btn-primary, .btn-primary::after, .btn-primary:active {
+    color: #FFA31A; /*Hellgrau*/
     /* background-color: #292929; Dunkelgrau*/
     background-color: #FFA31A;
-    border-color: #FFA31A;
+    border-color: #808080;
     text-align: center;
 }
 

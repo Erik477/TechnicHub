@@ -24,7 +24,7 @@ namespace TechnicHub.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Chatforum(ChatPost p)
+        public IActionResult Chatforum(Chatpost p)
         {
             if (p == null)
             {
