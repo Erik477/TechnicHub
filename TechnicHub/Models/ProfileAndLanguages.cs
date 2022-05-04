@@ -9,8 +9,8 @@ namespace TechnicHub.Models
     {
         
         public Profile Profile { get; set; }
-        public List<PLanguages> Languages { get; set; }
+        public List<string> Languages { get; set; }
 
-        
+   
     }
 }

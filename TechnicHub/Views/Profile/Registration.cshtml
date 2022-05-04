@@ -42,33 +42,17 @@
     </p>
 
     <p>
-
-        <input type="checkbox" id="JAVA" asp-for="Languages" value="0">
-        <label asp-for="Languages">JAVA</label><br>
-         
+        @* Hinzufügen der verschiedenen programmiersprachen zum Auswählen bei der Registrierung--> *@
         
-        <input type="checkbox" id="Python" asp-for="Languages" value="1">
-        <label for="1">Python</label><br>
+        @*Languages is a Liste also bei der checkbox müssma da mit einer foreach durchgehen*@
+        @foreach (string p in Model.Languages)
+        {
+            <input type="checkbox"  value ="@p.ToString()" name = "Languages">@p
+            <!--<label asp-for="Languages">@p</label>-->
+                <br />
+        }
 
-        <input type="checkbox" id="Mysql" asp-for="Languages" value="2">
-        <label for="2">Mysql</label>
 
-        <input type="checkbox" id="JavaScript" asp-for="Languages" value="3">
-        <label for="3">JavaScript</label>
-
-        <input type="checkbox" id="C++" asp-for="Languages" value="4">
-        <label for="4">C++</label>
-        <input type="checkbox" id="C#"asp-for="Languages" value="5">
-        <label for="5">C#</label>
-        
-        <input type="checkbox" id="Rust" asp-for="Languages" value="6">
-        <label for="6">Rust</label>
-
-        <input type="checkbox" id="Kotlin" asp-for="Languages" value="7">
-        <label for="7">Kotlin</label>
-
-        <input type="checkbox" id="Not specified" asp-for="Languages" value="8">
-        <label for="Not specified">Not specified</label>
 
         @*<select asp-for=" pLanguage">
             <option value="0">JAVA</option>
@@ -89,6 +73,6 @@
     </p>
 
 
-    @* Hinzufügen der verschiedenen programmiersprachen zum Auswählen bei der Registrierung--> *@
+    
 </form>
 

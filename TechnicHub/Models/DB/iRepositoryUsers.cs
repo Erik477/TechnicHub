@@ -16,8 +16,9 @@ namespace TechnicHub.Models.DB
         Task<bool> UpdateAsync(int userId, Profile newUserData);
         Task<Profile> GetUserAsync(int userId);
         Task<List<Profile>> GetAllUsersAsync();
+        Task<List<string>> GetAllPLanguagesAsync();
         Task<bool> InsertAsync(ProfileAndLanguages pl);
-        Task<bool> InsertLanguagesAsync(List<PLanguages> language, int user_id);
+        Task<bool> InsertLanguagesAsync(List<string> language, int user_id);
         Task<int> GetUserIdAsync(string username);
         Task<bool> LoginAsync(Profile p);
         Task<bool> InsertPostAsync(Chatpost post);

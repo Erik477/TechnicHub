@@ -78,13 +78,21 @@ namespace TechnicHub.Controllers
         }
         
         [HttpGet]
-        public IActionResult Registration()
+        public async Task<IActionResult> Registration()
         {
             ProfileAndLanguages pl = new ProfileAndLanguages();
             pl.Profile = new Profile();
-            pl.Languages = new List<PLanguages>();
+            pl.Languages = await GetLanguages();
+
             return View(pl);
         }
+        private async Task<List<string>> GetLanguages()
+        {
+            await rep.ConnectAsync();
+            return await rep.GetAllPLanguagesAsync();
+              
+        }
+        
         [HttpPost]
         public async Task<IActionResult> Registration(ProfileAndLanguages userDataFromForm)
         {//Paramenter Prüfen
