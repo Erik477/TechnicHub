@@ -8,6 +8,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using TechnicHub.Models.DB;
+using Microsoft.AspNetCore.Http;
 
 namespace TechnicHub.Controllers
 {
@@ -16,10 +17,6 @@ namespace TechnicHub.Controllers
     {
         private IRepositoryUsers rep = new RepositoryUsersDB();
         public IActionResult Activity()
-        {
-            return View();
-        }
-        public IActionResult Profile()
         {
             return View();
         }
@@ -53,16 +50,25 @@ namespace TechnicHub.Controllers
                     await rep.ConnectAsync();
                     if (await rep.LoginAsync(userDataFromForm))
                     {
+                        HttpContext.Session.SetInt32("logged", 1);
+                        HttpContext.Session.SetString("loggedUser", userDataFromForm.Username);
+
                         return View("_Message", new Message("LogIn", "Der LogIn war erfolgreich!"));
+
                     }
                     else
                     {
-                        return View("_Message", new Message("LogIn", "Der LogIn war NICHT erfolgreich!", "Bitte versuchen Sie es noch einaml!"));
+                        HttpContext.Session.SetInt32("logged", 0);
+                        return View("_Message", new Message("LogIn", "Der LogIn war NICHT erfolgreich!", "Bitte versuchen Sie es noch einmall!"));
                     }
                 }
                 catch (DbException)
                 {
-                    return View("_Message", new Message("LogIn", "Datenbankfehler", "Bitte versuchen Sie es später noch eimanl!"));
+                    return View("_Message", new Message("LogIn", "Datenbankfehler", "Bitte versuchen Sie es später noch einmal!"));
+                }
+                catch (NullReferenceException)
+                {
+                    return View("_Message", new Message("LogIn", "LogIn NICHT erfolgreich", "Bitte geben Sie die richtigen Daten ein!"));
                 }
                 finally
                 {
@@ -92,7 +98,35 @@ namespace TechnicHub.Controllers
             return await rep.GetAllPLanguagesAsync();
               
         }
-        
+
+        public async Task<ProfileAndLanguages> getProfileInfo(int user_id)
+        {
+            ProfileAndLanguages p = new ProfileAndLanguages();
+            p.Languages = await rep.GetLanguagesAsync(user_id);
+            p.Profile = await rep.GetUserAsync(user_id);
+
+            return p;
+        }
+
+        public async Task<IActionResult> ProfileData()
+        {
+            await rep.ConnectAsync();
+            int id = await rep.GetUserIdAsync(HttpContext.Session.GetString("loggedUser"));
+            Console.WriteLine(id);
+            if (id != null)
+            {
+                ProfileAndLanguages p = await getProfileInfo(id);
+                if (p != null)
+                {
+                    // alle User an die View übergeben
+                    return View(p);
+                }
+            }
+
+            await rep.DisconnectAsync();
+            return View("_Message", new Message("Profile", "Es ist ein Fehler aufgetreten!", "Bitte versuchen Sie es später noch einmal!"));
+
+        }
         [HttpPost]
         public async Task<IActionResult> Registration(ProfileAndLanguages userDataFromForm)
         {//Paramenter Prüfen

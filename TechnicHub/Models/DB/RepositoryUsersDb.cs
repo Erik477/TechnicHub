@@ -5,6 +5,8 @@ using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 using TechnicHub.Models;
+using Microsoft.AspNetCore.Http;
+
 
 namespace TechnicHub.Models.DB
 {
@@ -94,11 +96,14 @@ namespace TechnicHub.Models.DB
                 return null;
             }
             DbCommand cmdGet = this._conn.CreateCommand();
-            cmdGet.CommandText = "select * from users where user_id = id";
+            cmdGet.CommandText = "select * from users where user_id = @id";
+            
             DbParameter paramId = cmdGet.CreateParameter();
             paramId.ParameterName = "id";
-            paramId.DbType = DbType.Int16;
+            paramId.DbType = DbType.Int32;
             paramId.Value = userId;
+
+            cmdGet.Parameters.Add(paramId);
 
             Profile user = null;
             using (DbDataReader reader = await cmdGet.ExecuteReaderAsync())
@@ -122,6 +127,34 @@ namespace TechnicHub.Models.DB
             }
             return user;
         }
+        public async Task<List<string>> GetLanguagesAsync(int userId)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return null;
+            }
+
+            List<String> plang = new List<String>();
+            DbCommand cmdAllUsers = this._conn.CreateCommand();
+            cmdAllUsers.CommandText = "SELECT planguage.Plang_id, zwtable.user_id, planguage.Plang_name  FROM planguage INNER JOIN zwtable ON zwtable.user_id = @userId ";
+
+            DbParameter paramId = cmdAllUsers.CreateParameter();
+            paramId.ParameterName = "userId";
+            paramId.DbType = DbType.Int16;
+            paramId.Value = userId;
+
+            cmdAllUsers.Parameters.Add(paramId);
+
+            using (DbDataReader reader = await cmdAllUsers.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    plang.Add(reader["Plang_name"].ToString());
+                }
+            }
+            return plang;
+        }
+
         public async Task<List<String>> GetAllPLanguagesAsync()
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -142,10 +175,6 @@ namespace TechnicHub.Models.DB
             }
             return plang;
         }
-
-
-
-
         public async Task<bool> InsertUserAsync(Profile user)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -198,7 +227,7 @@ namespace TechnicHub.Models.DB
 
             bool result = false;
             DbCommand cmdInsert = this._conn.CreateCommand();
-            cmdInsert.CommandText = "insert into user_languages values(@user_id, @language_id)";
+            cmdInsert.CommandText = "insert into planguage values(@user_id, @language_id)";
 
             DbParameter paramUserId = cmdInsert.CreateParameter();
             paramUserId.ParameterName = "user_id";
@@ -248,7 +277,7 @@ namespace TechnicHub.Models.DB
                 return false;
             }
 
-          
+
             DbCommand cmdInsert = this._conn.CreateCommand();
             cmdInsert.CommandText = "insert into zwtable values(@user_id, @Plang_id)";
 
@@ -279,18 +308,22 @@ namespace TechnicHub.Models.DB
 
             if (user)
             {
+                bool zw = false;
                 int user_id = await GetUserIdAsync(pl.Profile.Username);
-                bool lang = await InsertLanguagesAsync(pl.Languages, user_id);
-                int lang_id = await GetLanguageIdAsync(pl.Languages.ToString());
-                bool zw = await InsertZwAsync(lang_id, user_id);
-                return lang && zw;
+
+                foreach (string s in pl.Languages) {
+                    int lang_id = await GetLanguageIdAsync(s); // Da kömma jetzt doch s sagen statt pl.languages 
+
+                    Console.WriteLine(pl.Languages.ToString());
+                    zw = await InsertZwAsync(lang_id, user_id);
+                }
+                return zw;
             }
             else
             {
                 return false;
             }
         }
-
         public async Task<int> GetUserIdAsync(string username)
         {
             DbCommand cmdGet = this._conn.CreateCommand();
@@ -312,7 +345,6 @@ namespace TechnicHub.Models.DB
             }
             return user_id;
         }
-        
         public async Task<bool> LoginAsync(Profile p)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -321,7 +353,7 @@ namespace TechnicHub.Models.DB
             }
 
             DbCommand cmdInsert = this._conn.CreateCommand();
-            cmdInsert.CommandText = "select * from users where username = @username and password = sha2(@password,512)";
+            cmdInsert.CommandText = "select user_id from users where username = @username and password = sha2(@password,512)";
 
             DbParameter paramUN = cmdInsert.CreateParameter();
             paramUN.ParameterName = "username";
@@ -336,10 +368,9 @@ namespace TechnicHub.Models.DB
             cmdInsert.Parameters.Add(paramUN);
             cmdInsert.Parameters.Add(paramPWD);
 
-            return await cmdInsert.ExecuteNonQueryAsync() == 1;
-           
-        }
 
+            return (UInt32)(await cmdInsert.ExecuteScalarAsync()) != 0;
+        }
         public async Task<bool> UpdateAsync(int userId, Profile newUserData)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -389,7 +420,6 @@ namespace TechnicHub.Models.DB
 
             return await cmdUpdate.ExecuteNonQueryAsync() == 1;
         }
-
         public async Task<bool> InsertPostAsync(Chatpost post)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -433,4 +463,3 @@ namespace TechnicHub.Models.DB
         }
     }
 }
-
