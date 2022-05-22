@@ -29,7 +29,6 @@ namespace TechnicHub.Models.DB
                 await this._conn.OpenAsync();
             }
         }
-
         public async Task DisconnectAsync()
         {
             if (this._conn != null && this._conn.State == ConnectionState.Open)
@@ -37,7 +36,6 @@ namespace TechnicHub.Models.DB
                 await this._conn.CloseAsync();
             }
         }
-
         public async Task<bool> DeleteAsync(int userId)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -58,7 +56,6 @@ namespace TechnicHub.Models.DB
 
 
         }
-
         public async Task<List<Profile>> GetAllUsersAsync()
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -88,7 +85,6 @@ namespace TechnicHub.Models.DB
             }
             return users;
         }
-
         public async Task<Profile> GetUserAsync(int userId)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -154,7 +150,6 @@ namespace TechnicHub.Models.DB
             }
             return plang;
         }
-
         public async Task<List<String>> GetAllPLanguagesAsync()
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -451,7 +446,7 @@ namespace TechnicHub.Models.DB
             DbParameter paramChatroomId = cmdInsert.CreateParameter();
             paramChatroomId.ParameterName = "Chatroom";
             paramChatroomId.DbType = DbType.Int32;
-            paramChatroomId.Value = 2;
+            paramChatroomId.Value = post.ChatroomId;
 
             cmdInsert.Parameters.Add(paramMessage);
             cmdInsert.Parameters.Add(paramDate);
@@ -461,5 +456,169 @@ namespace TechnicHub.Models.DB
             return await cmdInsert.ExecuteNonQueryAsync() == 1;
 
         }
+        public async Task<bool> InsertRoomAsync(Chatroom room)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+
+            DbCommand cmdInsert = this._conn.CreateCommand();
+            cmdInsert.CommandText = "insert into chatroom values(null, @Name, @Description)";
+
+            DbParameter paramName = cmdInsert.CreateParameter();
+            paramName.ParameterName = "Name";
+            paramName.DbType = DbType.String;
+            paramName.Value = room.Name;
+
+            DbParameter paramDescription = cmdInsert.CreateParameter();
+            paramDescription.ParameterName = "Description";
+            paramDescription.DbType = DbType.String;
+            paramDescription.Value = room.Description;
+
+            cmdInsert.Parameters.Add(paramName);
+            cmdInsert.Parameters.Add(paramDescription);
+
+            return await cmdInsert.ExecuteNonQueryAsync() == 1;
+        }
+        public async Task<int> GetMessageCountAsync(int id)
+        {
+            int MsgCount = 0;
+
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return MsgCount;
+            }
+
+            DbCommand cmdSelect = this._conn.CreateCommand();
+            cmdSelect.CommandText = "select count(*) from posts where Chatroom = @chatroom_id";
+
+            DbParameter paramChatroomId = cmdSelect.CreateParameter();
+            paramChatroomId.ParameterName = "chatroom_id";
+            paramChatroomId.DbType = DbType.Int32;
+            paramChatroomId.Value =id;
+
+            cmdSelect.Parameters.Add(paramChatroomId);
+
+            MsgCount = (int)(long)(await cmdSelect.ExecuteScalarAsync());
+
+            return MsgCount;
+
+        }
+        public async Task<List<Chatpost>> GetPostsAsync(int id)
+        {
+            List<Chatpost> MsgList = new List<Chatpost>();
+
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return MsgList;
+            }
+            int ChatpostUserId = 0;
+            Profile user = new Profile();
+
+            DbCommand cmdSelect = this._conn.CreateCommand();
+            cmdSelect.CommandText = "select * from posts where Chatroom = @chatroom_id";
+
+            DbParameter paramChatroomId = cmdSelect.CreateParameter();
+            paramChatroomId.ParameterName = "chatroom_id";
+            paramChatroomId.DbType = DbType.Int32;
+            paramChatroomId.Value = id;
+
+            cmdSelect.Parameters.Add(paramChatroomId);
+
+            DbDataReader reader = await cmdSelect.ExecuteReaderAsync();
+
+            while (reader.Read())
+            {
+                Chatpost msg = new Chatpost();
+                msg.ChatpostId = (int)reader["post_id"];
+                msg.ChatpostMessage = (string)reader["message"];
+                msg.ChatpostDate = (DateTime)reader["post_date"];
+                ChatpostUserId = (int)reader["user_id"];
+                user = await GetUserAsync(ChatpostUserId);
+                msg.ChatpostUser = user.Username;
+                msg.ChatroomId = (int)reader["chatroom_id"];
+
+                MsgList.Add(msg);
+            }
+
+            return MsgList;
+        }
+        public async Task<List<Chatroom>> GetRoomsAsync()
+        {
+            List<Chatroom> RoomList = new List<Chatroom>();
+
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return RoomList;
+            }
+
+            DbCommand cmdSelect = this._conn.CreateCommand();
+            cmdSelect.CommandText = "select * from chatroom";
+
+            DbDataReader reader = await cmdSelect.ExecuteReaderAsync();
+
+            while (reader.Read())
+            {
+                Chatroom room = new Chatroom();
+                room.Id = (int)reader["Id"];
+                room.Name = (string)reader["name"];
+                room.Description = (string)reader["description"];
+
+                RoomList.Add(room);
+            }
+
+            await DisconnectAsync();
+            
+            await ConnectAsync();
+
+            for (int i = 0; i < RoomList.Count; i++)
+            {
+                RoomList[i].MessageCount = (int)(await GetMessageCountAsync(RoomList[i].Id));
+            }
+
+
+
+            return RoomList;
+        }
+        public async Task<bool> DeletePostAsync(int id)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+
+            DbCommand cmdDelete = this._conn.CreateCommand();
+            cmdDelete.CommandText = "delete from posts where PostId = @post_id";
+
+            DbParameter paramPostId = cmdDelete.CreateParameter();
+            paramPostId.ParameterName = "post_id";
+            paramPostId.DbType = DbType.Int32;
+            paramPostId.Value = id;
+
+            cmdDelete.Parameters.Add(paramPostId);
+
+            return await cmdDelete.ExecuteNonQueryAsync() == 1;
+        }
+        public async Task<bool> DeleteRoomAsync(int id)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+
+            DbCommand cmdDelete = this._conn.CreateCommand();
+            cmdDelete.CommandText = "delete from chatroom where Id = @chatroom_id";
+
+            DbParameter paramChatroomId = cmdDelete.CreateParameter();
+            paramChatroomId.ParameterName = "chatroom_id";
+            paramChatroomId.DbType = DbType.Int32;
+            paramChatroomId.Value = id;
+
+            cmdDelete.Parameters.Add(paramChatroomId);
+
+            return await cmdDelete.ExecuteNonQueryAsync() == 1;
+        }
+
     }
 }

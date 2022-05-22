@@ -23,5 +23,11 @@ namespace TechnicHub.Models.DB
         Task<bool> LoginAsync(Profile p);
         Task<bool> InsertPostAsync(Chatpost post);
         Task<List<string>> GetLanguagesAsync(int user_id);
+        Task<bool> InsertRoomAsync(Chatroom room);
+        Task<int> GetMessageCountAsync(int id);
+        Task<List<Chatpost>> GetPostsAsync(int id);
+        Task<List<Chatroom>> GetRoomsAsync();
+        Task<bool> DeletePostAsync(int id);
+        Task<bool> DeleteRoomAsync(int id);
     }
 }
