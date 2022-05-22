@@ -1,45 +1,29 @@
-﻿@model TechnicHub.Models.Chatpost;
+﻿@model List<TechnicHub.Models.Chatpost>;
 
 @{
     ViewData["Title"] = "View";
 }
 
 
-<form asp-controller="user" asp-action="chatforum" method="post">
-   <p>
-       Chatrooms:
-        @foreach (var chatroom in Model.Chatrooms){
-                <input type="radio" name="chatroom" value="@(chatroom.Id)" />
-
-            @(chatroom.Name)
-        }
-   </p>
-   
-   <p>
-       <input type="Add" value="Add" />
-   </p>
-    
-
-</form>
-
-<br /><br />
-
 <div>
-  
-  
+
+    @foreach (Chatpost c in Model)
+    {
+        <p>@c.ChatpostDate</p>
+        <p>@c.ChatpostUser schrieb:</p>
+        <p>@c.ChatpostMessage </p>
+
+        <form action="/user/DeletePost/@c.ChatpostId" method="get">
+            <input type="submit" value="Delete" />
+        </form>
+    }
+
+    <form action="/user/AddPost" method="get">
+        <input type="submit" value="Add" />
+    </form>
+
+
 
 
 </div> 
 
-@*<p> 
-        <label asp-for="ChatpostMessage"> Nachricht</label> <br />
-        <input type="text" asp-for="ChatpostMessage" />
-        <span asp-validation-for="ChatpostMessage"></span>  
-       
-        <input type="submit" value="Senden" />
-
-    </p>*
-    
-    @* <p>@Model.ChatpostUser schrieb: </p>
-    <br/>
-    <p>@Model.ChatpostMessage</p>*@

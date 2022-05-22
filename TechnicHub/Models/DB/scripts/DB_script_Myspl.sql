@@ -68,11 +68,20 @@ create table posts(
 );
 
 select * from posts;
-ouiol
+
+
+drop table if exists chatroom;
+create table chatroom(
+	Id int not null auto_increment,
+	Name varchar(100) not null,
+	Description varchar(255),
+    constraint Id_pk primary key(Id)	
+);
 */
 
-create table chatroom(
-	Id int unsignes not null auto_inc ewdsd
-)
+insert into chatroom values(null, "C# Projekt","Austauschort für C# Projekte");
+select * from chatroom;
+
+
 
     

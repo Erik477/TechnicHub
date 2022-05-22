@@ -37,6 +37,8 @@
 
   <ItemGroup>
     <Content Remove="Views\Profile\Profile.cshtml" />
+    <Content Remove="Views\User\CchatRoomList.cshtml" />
+    <Content Remove="Views\User\ChatroomList.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +46,8 @@
     <None Remove="Models\NewFile.txt" />
     <None Remove="Views\Home\NewFile.txt" />
     <None Remove="Views\Profile\NewFile.txt" />
+    <None Remove="Views\User\Chatrooms" />
+    <None Remove="Views\User\NewFile.txt" />
   </ItemGroup>
 
   <ItemGroup>

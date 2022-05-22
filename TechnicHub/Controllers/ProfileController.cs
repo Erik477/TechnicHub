@@ -1,5 +1,4 @@
 ﻿
-
 using TechnicHub.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
