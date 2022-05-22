@@ -6,14 +6,19 @@
 
 
 <form asp-controller="user" asp-action="chatforum" method="post">
-    <p> 
-        <label asp-for="ChatpostMessage"> Nachricht</label> <br />
-        <input type="text" asp-for="ChatpostMessage" />
-        <span asp-validation-for="ChatpostMessage"></span>  
-       
-        <input type="submit" value="Senden" />
+   <p>
+       Chatrooms:
+        @foreach (var chatroom in Model.Chatrooms){
+                <input type="radio" name="chatroom" value="@(chatroom.Id)" />
 
-    </p>
+            @(chatroom.Name)
+        }
+   </p>
+   
+   <p>
+       <input type="Add" value="Add" />
+   </p>
+    
 
 </form>
 
@@ -21,9 +26,20 @@
 
 <div>
   
-   @* <p>@Model.ChatpostUser schrieb: </p>
+  
+
+
+</div> 
+
+@*<p> 
+        <label asp-for="ChatpostMessage"> Nachricht</label> <br />
+        <input type="text" asp-for="ChatpostMessage" />
+        <span asp-validation-for="ChatpostMessage"></span>  
+       
+        <input type="submit" value="Senden" />
+
+    </p>*
+    
+    @* <p>@Model.ChatpostUser schrieb: </p>
     <br/>
     <p>@Model.ChatpostMessage</p>*@
-
-
-</div>

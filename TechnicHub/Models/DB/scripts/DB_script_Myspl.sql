@@ -68,7 +68,11 @@ create table posts(
 );
 
 select * from posts;
-
+ouiol
 */
+
+create table chatroom(
+	Id int unsignes not null auto_inc ewdsd
+)
 
     
