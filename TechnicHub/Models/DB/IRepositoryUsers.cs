@@ -21,7 +21,7 @@ namespace TechnicHub.Models.DB
         Task<bool> InsertLanguagesAsync(List<string> language, int user_id);
         Task<int> GetUserIdAsync(string username);
         Task<bool> LoginAsync(Profile p);
-        Task<bool> InsertPostAsync(Chatpost post);
+        Task<bool> InsertPostAsync(Chatpost post, int UserId);
         Task<List<string>> GetLanguagesAsync(int user_id);
         Task<bool> InsertRoomAsync(Chatroom room);
         Task<int> GetMessageCountAsync(int id);
