@@ -13,9 +13,10 @@ namespace TechnicHub.Models.DB
     // diese Klasse implementiert unser Interface
     public class RepositoryUsersDB : IRepositoryUsers
     {
-        private string _connString = "Server=localhost;database=technichub;user=root;password=admin";
+        private string _connString = "Server=localhost;database=technichub;user=root;password=12345";
 
         private DbConnection _conn;
+
         public async Task ConnectAsync()
         {
 
@@ -36,7 +37,7 @@ namespace TechnicHub.Models.DB
                 await this._conn.CloseAsync();
             }
         }
-        public async Task<bool> DeleteAsync(int userId)
+        public async Task<bool> DeleteUserAsync(int userId)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
@@ -45,6 +46,26 @@ namespace TechnicHub.Models.DB
             DbCommand cmdDelete = this._conn.CreateCommand();
 
             cmdDelete.CommandText = "delete from users where user_id =@id";
+            DbParameter paramId = cmdDelete.CreateParameter();
+            paramId.ParameterName = "id";
+            paramId.DbType = DbType.Int16;
+            paramId.Value = userId;
+
+            cmdDelete.Parameters.Add(paramId);
+            int res = await cmdDelete.ExecuteNonQueryAsync();
+            return res == 1;
+
+
+        }
+        public async Task<bool> DeleteZwAsync(int userId)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+            DbCommand cmdDelete = this._conn.CreateCommand();
+
+            cmdDelete.CommandText = "delete from zwtable where user_id =@id";
             DbParameter paramId = cmdDelete.CreateParameter();
             paramId.ParameterName = "id";
             paramId.DbType = DbType.Int16;
@@ -170,6 +191,8 @@ namespace TechnicHub.Models.DB
             }
             return plang;
         }
+
+
         public async Task<bool> InsertUserAsync(Profile user)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -366,55 +389,7 @@ namespace TechnicHub.Models.DB
 
             return ((Int32)await cmdInsert.ExecuteScalarAsync()) != 0;
         }
-        public async Task<bool> UpdateAsync(int userId, Profile newUserData)
-        {
-            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
-            {
-                return false;
-            }
-            DbCommand cmdUpdate = this._conn.CreateCommand();
-            cmdUpdate.CommandText = "update table users set user_id = @id, username = @username," +
-                "password = sha2(@password,512), birthdate = @bDate, email = @mail, gender = @gender where user_id = @id";
-
-            DbParameter paramId = cmdUpdate.CreateParameter();
-            paramId.ParameterName = "id";
-            paramId.DbType = DbType.String;
-            paramId.Value = newUserData.UserId;
-
-            DbParameter paramUN = cmdUpdate.CreateParameter();
-            paramUN.ParameterName = "username";
-            paramUN.DbType = DbType.String;
-            paramUN.Value = newUserData.Username;
-
-            DbParameter paramPWD = cmdUpdate.CreateParameter();
-            paramPWD.ParameterName = "password";
-            paramPWD.DbType = DbType.String;
-            paramPWD.Value = newUserData.Password;
-
-            DbParameter paramBD = cmdUpdate.CreateParameter();
-            paramBD.ParameterName = "bDate";
-            paramBD.DbType = DbType.DateTime;
-            paramBD.Value = newUserData.Birthdate;
-
-            DbParameter paramEmail = cmdUpdate.CreateParameter();
-            paramEmail.ParameterName = "mail";
-            paramEmail.DbType = DbType.String;
-            paramEmail.Value = newUserData.EMail;
-
-            DbParameter paramGender = cmdUpdate.CreateParameter();
-            paramGender.ParameterName = "gender";
-            paramGender.DbType = DbType.Int32;
-            paramGender.Value = newUserData.Gender;
-
-            cmdUpdate.Parameters.Add(paramId);
-            cmdUpdate.Parameters.Add(paramUN);
-            cmdUpdate.Parameters.Add(paramPWD);
-            cmdUpdate.Parameters.Add(paramBD);
-            cmdUpdate.Parameters.Add(paramEmail);
-            cmdUpdate.Parameters.Add(paramGender);
-
-            return await cmdUpdate.ExecuteNonQueryAsync() == 1;
-        }
+        
         public async Task<bool> InsertPostAsync(Chatpost post, int UserId)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
@@ -620,5 +595,113 @@ namespace TechnicHub.Models.DB
             return await cmdDelete.ExecuteNonQueryAsync() == 1;
         }
 
+        public async Task<bool> UpdateUserAsync(int userId, Profile newUserData)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+            DbCommand cmdUpdate = this._conn.CreateCommand();
+            cmdUpdate.CommandText = "update users set user_id = @id, username = @username," +
+                "password = sha2(@password,512), birthdate = @bDate, email = @mail, gender = @gender where user_id = @id";
+
+            DbParameter paramId = cmdUpdate.CreateParameter();
+            paramId.ParameterName = "id";
+            paramId.DbType = DbType.String;
+            paramId.Value = newUserData.UserId;
+
+            DbParameter paramUN = cmdUpdate.CreateParameter();
+            paramUN.ParameterName = "username";
+            paramUN.DbType = DbType.String;
+            paramUN.Value = newUserData.Username;
+
+            DbParameter paramPWD = cmdUpdate.CreateParameter();
+            paramPWD.ParameterName = "password";
+            paramPWD.DbType = DbType.String;
+            paramPWD.Value = newUserData.Password;
+
+            DbParameter paramBD = cmdUpdate.CreateParameter();
+            paramBD.ParameterName = "bDate";
+            paramBD.DbType = DbType.DateTime;
+            paramBD.Value = newUserData.Birthdate;
+
+            DbParameter paramEmail = cmdUpdate.CreateParameter();
+            paramEmail.ParameterName = "mail";
+            paramEmail.DbType = DbType.String;
+            paramEmail.Value = newUserData.EMail;
+
+            DbParameter paramGender = cmdUpdate.CreateParameter();
+            paramGender.ParameterName = "gender";
+            paramGender.DbType = DbType.Int32;
+            paramGender.Value = newUserData.Gender;
+
+            cmdUpdate.Parameters.Add(paramId);
+            cmdUpdate.Parameters.Add(paramUN);
+            cmdUpdate.Parameters.Add(paramPWD);
+            cmdUpdate.Parameters.Add(paramBD);
+            cmdUpdate.Parameters.Add(paramEmail);
+            cmdUpdate.Parameters.Add(paramGender);
+
+            return await cmdUpdate.ExecuteNonQueryAsync() == 1;
+        }
+        public async Task<bool> UpdateAsync(int userId, ProfileAndLanguages newUserData)
+         {
+        if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+        {
+            return false;
+        }
+
+        bool user = await UpdateUserAsync(userId, newUserData.Profile);
+
+        if (user)
+        {
+            bool zw = false;
+        int user_id = await GetUserIdAsync(newUserData.Profile.Username);
+       
+
+            foreach (string s in newUserData.Languages)
+            {
+                int lang_id = await GetLanguageIdAsync(s); // Da kömma jetzt doch s sagen statt pl.languages 
+
+        Console.WriteLine(newUserData.Languages.ToString());
+                zw = await UpdateZwAsync(lang_id, user_id);
     }
+            return zw;
+        }
+        else
+        {
+    return false;
+    }
+    }
+
+        public async Task<bool> UpdateZwAsync(int lang_id, int user_id)
+        {
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return false;
+            }
+
+
+            DbCommand cmdUpdate = this._conn.CreateCommand();
+            cmdUpdate.CommandText = "update zwtable set plang_id = @PLang_id where user_id = @user_id";
+
+            DbParameter paramUserId = cmdUpdate.CreateParameter();
+            paramUserId.ParameterName = "user_id";
+            paramUserId.DbType = DbType.Int16;
+            paramUserId.Value = user_id;
+
+            DbParameter paramLanguageId = cmdUpdate.CreateParameter();
+            paramLanguageId.ParameterName = "Plang_id";
+            paramLanguageId.DbType = DbType.Int16;
+            paramLanguageId.Value = lang_id;
+
+            cmdUpdate.Parameters.Add(paramUserId);
+            cmdUpdate.Parameters.Add(paramLanguageId);
+
+
+            return await cmdUpdate.ExecuteNonQueryAsync() == 1;
+        }
+    }
+
+   
 }
