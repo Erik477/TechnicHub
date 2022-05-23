@@ -39,7 +39,8 @@
                 
                 @{if (logged == 1) { 
                       <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="ProfileData">@loggedUser</a>
-                }else{
+                      <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="LogOut">LogOut</a>
+    }else{
                      <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="LogIn">LogIn</a>
                      <a class="navbar-brand text-center " asp-area="" asp-controller="Profile" asp-action="Registration">Register</a>
                 }}

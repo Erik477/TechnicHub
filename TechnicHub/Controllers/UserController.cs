@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using TechnicHub.Models.DB;
+using Microsoft.AspNetCore.Http;
 
 namespace TechnicHub.Controllers
 {
@@ -48,41 +49,10 @@ namespace TechnicHub.Controllers
                 await rep.DisconnectAsync();
             }
         }
-   
-        [HttpPost]
-        public async Task<IActionResult> Chatforum(Chatpost post)
-        {
-            if (post == null)
-            {
-                return RedirectToAction("Chatforum");
-            }
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await rep.ConnectAsync();
-                    if (await rep.InsertPostAsync(post))
-                    {
-                        // return View("_Message", new Message("Posting", "Kommentar wurde veröffentlicht!"));
-                        return View(post);
-                    }
-                    else
-                    {
-                        return View("_Message", new Message("Posting", "Kommentar konnte nicht veröffentlicht werden!", "Bitte versuchen Sie es später noch eimanl!"));
-                    }
-                }
-                catch (DbException)
-                {
-                    return View("_Message", new Message("Posting", "Datenbankfehler", "Bitte versuchen Sie es später noch eimal!"));
-                }
-                finally
-                {
-                    await rep.DisconnectAsync();
-                    
-                }                
-            }
-            return View(post);
-        }
+
+
+        int chatroom;
+
 
         [HttpGet]
         public async Task<IActionResult> Chatforum(int chatroom_id)
@@ -91,6 +61,7 @@ namespace TechnicHub.Controllers
             {
                 await rep.ConnectAsync();
                 List<Chatpost> posts = await rep.GetPostsAsync(chatroom_id);
+                chatroom = chatroom_id;
                 if (posts != null)
                 {
                     // alle User an die View übergeben
@@ -112,7 +83,7 @@ namespace TechnicHub.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int chatroom_id)
+        public async Task<IActionResult> DeleteRoom(int chatroom_id)
         {
             try
             {
@@ -172,8 +143,59 @@ namespace TechnicHub.Controllers
             }
             return View(room);
         }
-        
-          
+
+        [HttpGet]
+        public IActionResult AddPost()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPost(Chatpost post)
+        {
+            post.ChatroomId = chatroom;
+            int UserId = 0;
+            try
+            {
+                await rep.ConnectAsync();
+                UserId = await rep.GetUserIdAsync(HttpContext.Session.GetString("loggedUser"));
+               }
+            catch (DbException)
+            {
+                return View("_Message", new Message("Datenbankfehler", "Datenbankprobleme beim holen der Userid", "Versuchen sie es später erneut!"));
+            }
+            finally
+            {
+                await rep.DisconnectAsync();
+            }
+
+
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await rep.ConnectAsync();
+                    if (await rep.InsertPostAsync(post,UserId))
+                    {
+                        return View();
+                    }
+                    else
+                    {
+                        return View("_Message", new Message("Chatroom", "Post konnte nicht erstellt werden!", "Versuchen sie es später erneut!"));
+                    }
+                }
+                catch (DbException)
+                {
+                    return View("_Message", new Message("Datenbankfehler", "Datenbankprobleme", "Versuchen sie es später erneut!"));
+                }
+                finally
+                {
+                    await rep.DisconnectAsync();
+                }
+            }
+            return View(post);
+        }
 
         public IActionResult Newsletter()
         {

@@ -126,6 +126,13 @@ namespace TechnicHub.Controllers
             return View("_Message", new Message("Profile", "Es ist ein Fehler aufgetreten!", "Bitte versuchen Sie es später noch einmal!"));
 
         }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.SetInt32("logged", 0);
+            return View("_Message", new Message("Profile", "Sie wurden erfolgreich abgemeldet", "Auf Wiedersehen!"));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Registration(ProfileAndLanguages userDataFromForm)
         {//Paramenter Prüfen

@@ -132,7 +132,7 @@ namespace TechnicHub.Models.DB
 
             List<String> plang = new List<String>();
             DbCommand cmdAllUsers = this._conn.CreateCommand();
-            cmdAllUsers.CommandText = "SELECT planguage.Plang_id, zwtable.user_id, planguage.Plang_name  FROM planguage INNER JOIN zwtable ON zwtable.user_id = @userId ";
+            cmdAllUsers.CommandText = "SELECT plang_name from planguage, users, zwtable where users.user_id = zwtable.user_id and zwtable.plang_id = planguage.plang_id and users.user_id = @userId ";
 
             DbParameter paramId = cmdAllUsers.CreateParameter();
             paramId.ParameterName = "userId";
@@ -364,7 +364,7 @@ namespace TechnicHub.Models.DB
             cmdInsert.Parameters.Add(paramPWD);
 
 
-            return (UInt32)(await cmdInsert.ExecuteScalarAsync()) != 0;
+            return ((Int32)await cmdInsert.ExecuteScalarAsync()) != 0;
         }
         public async Task<bool> UpdateAsync(int userId, Profile newUserData)
         {
@@ -415,18 +415,18 @@ namespace TechnicHub.Models.DB
 
             return await cmdUpdate.ExecuteNonQueryAsync() == 1;
         }
-        public async Task<bool> InsertPostAsync(Chatpost post)
+        public async Task<bool> InsertPostAsync(Chatpost post, int UserId)
         {
             if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
             {
                 return false;
             }
 
-            int UserId = await GetUserIdAsync("erik");
+            post.ChatpostId = 1; //Nicht Final nur um die anderen Systeme zu testen
 
             DbCommand cmdInsert = this._conn.CreateCommand();
             
-            cmdInsert.CommandText = "insert into posts values(null, @Message, @Post_date, @UserId, @Chatroom)";
+            cmdInsert.CommandText = "insert into posts values(null, @Message, @Post_date, @UserId, @ChatroomId)";
 
             DbParameter paramMessage = cmdInsert.CreateParameter();
             paramMessage.ParameterName = "Message";
@@ -444,7 +444,7 @@ namespace TechnicHub.Models.DB
             paramUser.Value = UserId;
 
             DbParameter paramChatroomId = cmdInsert.CreateParameter();
-            paramChatroomId.ParameterName = "Chatroom";
+            paramChatroomId.ParameterName = "ChatroomId";
             paramChatroomId.DbType = DbType.Int32;
             paramChatroomId.Value = post.ChatroomId;
 
@@ -491,12 +491,12 @@ namespace TechnicHub.Models.DB
             }
 
             DbCommand cmdSelect = this._conn.CreateCommand();
-            cmdSelect.CommandText = "select count(*) from posts where Chatroom = @chatroom_id";
+            cmdSelect.CommandText = "select count(*) from posts where chatroomID = @chatroom_id";
 
             DbParameter paramChatroomId = cmdSelect.CreateParameter();
             paramChatroomId.ParameterName = "chatroom_id";
             paramChatroomId.DbType = DbType.Int32;
-            paramChatroomId.Value =id;
+            paramChatroomId.Value = id;
 
             cmdSelect.Parameters.Add(paramChatroomId);
 
@@ -517,7 +517,7 @@ namespace TechnicHub.Models.DB
             Profile user = new Profile();
 
             DbCommand cmdSelect = this._conn.CreateCommand();
-            cmdSelect.CommandText = "select * from posts where Chatroom = @chatroom_id";
+            cmdSelect.CommandText = "select * from posts where chatroomID = @chatroom_id";
 
             DbParameter paramChatroomId = cmdSelect.CreateParameter();
             paramChatroomId.ParameterName = "chatroom_id";
@@ -531,13 +531,13 @@ namespace TechnicHub.Models.DB
             while (reader.Read())
             {
                 Chatpost msg = new Chatpost();
-                msg.ChatpostId = (int)reader["post_id"];
-                msg.ChatpostMessage = (string)reader["message"];
-                msg.ChatpostDate = (DateTime)reader["post_date"];
-                ChatpostUserId = (int)reader["user_id"];
+                msg.ChatpostId = (int)reader["PostId"];
+                msg.ChatpostMessage = (string)reader["Message"];
+                msg.ChatpostDate = (DateTime)reader["Post_date"];
+                ChatpostUserId = (int)reader["UserId"];
                 user = await GetUserAsync(ChatpostUserId);
                 msg.ChatpostUser = user.Username;
-                msg.ChatroomId = (int)reader["chatroom_id"];
+                msg.ChatroomId = (int)reader["ChatroomId"];
 
                 MsgList.Add(msg);
             }

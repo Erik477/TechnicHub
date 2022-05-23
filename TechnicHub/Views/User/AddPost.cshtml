@@ -10,19 +10,20 @@
     Formulare werden zu 99% oer post versendet
     -->
 <form asp-controller="User" asp-action="AddPost" method="post">
-    <p>
-        <form asp-controller="User" asp-action="chatforum" method="post">
+    
+
         <label asp-for="ChatpostMessage"> Nachricht</label> <br />
         <input type="text" asp-for="ChatpostMessage" />
         <span asp-validation-for="ChatpostMessage"></span>
 
      
 
-    <p>
+    
         <input class="btn btn-primary btn-group" type="submit" value='absenden' />
         <input class="btn btn-primary btn-group" type="reset" value='abbrechen' />
-    </p>
+   
 
 
 
 </form>
+
