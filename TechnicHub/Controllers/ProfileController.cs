@@ -95,7 +95,10 @@ namespace TechnicHub.Controllers
         {
             await rep.ConnectAsync();
             return await rep.GetAllPLanguagesAsync();
+
+            await rep.DisconnectAsync();
               
+            
         }
 
         public async Task<ProfileAndLanguages> getProfileInfo(int user_id)
@@ -130,6 +133,7 @@ namespace TechnicHub.Controllers
         public IActionResult LogOut()
         {
             HttpContext.Session.SetInt32("logged", 0);
+            HttpContext.Session.SetString("loggedUser", "");
             return View("_Message", new Message("Profile", "Sie wurden erfolgreich abgemeldet", "Auf Wiedersehen!"));
         }
 
@@ -174,7 +178,77 @@ namespace TechnicHub.Controllers
             //Falls das Formular nicht richtig ausgefüllt wurde werden die eingeg. daten erneut angezeigt
 
             return View(userDataFromForm);
+
+
         }
+
+        [HttpGet]
+        public async Task <IActionResult>UpdateProfile(int id)
+        {
+            try { 
+            await rep.ConnectAsync();
+                 ProfileAndLanguages p =await  getProfileInfo(id);
+                p.Languages = await GetLanguages();
+            return View(p);
+            }
+            catch (DbException)
+            {
+                return View("_Message", new Message("Datenbankfehler", "Keine Verbindung zur Datenbank!", "Versuchen sie es später ernuet!"));
+            }
+            finally
+            {
+                await rep.DisconnectAsync();
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(int id, ProfileAndLanguages userDatafromForm)
+        {
+
+                await rep.ConnectAsync();
+              
+                Profile p = userDatafromForm.Profile;
+                List<string> languages = userDatafromForm.Languages;
+                bool working = await rep.UpdateAsync(id, userDatafromForm);
+                if (working)
+                {
+                    return View("_Message", new Message("Update", "User wurde erfolgreich aktualisiert!"));
+                }
+                else
+                {
+                    return View("_Message", new Message("Update", "User konnte nicht aktualisiert werden!"));
+                }
+            await rep.DisconnectAsync();
+            
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await rep.ConnectAsync();
+                bool working =  await rep.DeleteZwAsync(id) && await rep.DeleteUserAsync(id);
+                if (working)
+                {
+                    HttpContext.Session.SetInt32("logged", 0);
+                    HttpContext.Session.SetString("loggedUser", "");
+                    return View("_Message", new Message("Löschung", "User Löschung war erfolgreich"));
+                }
+                else
+                {
+                    return View("_Message", new Message("Löschungsfehler", "User konnte nicht gelöscht werden", "Versuchen sie später erneut!"));
+
+                }
+            }
+            catch (DbException)
+            {
+                return View("_Message", new Message("Datenbankfehler", "Keine Verbindung zur Datenbank!", "Versuchen sie es später ernuet!"));
+            }
+            finally
+            {
+                await rep.DisconnectAsync();
+            }
+        }
+
         private void ValidateRegistrationData(ProfileAndLanguages p)
         {
                     //Parameter überprüfen

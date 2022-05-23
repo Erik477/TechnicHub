@@ -12,8 +12,11 @@ namespace TechnicHub.Models.DB
         Task ConnectAsync();
         Task DisconnectAsync();
         Task<bool> InsertUserAsync(Profile user);
-        Task<bool> DeleteAsync(int userId);
-        Task<bool> UpdateAsync(int userId, Profile newUserData);
+        Task<bool> DeleteUserAsync(int userId);
+        Task<bool> DeleteZwAsync(int userId);
+        Task<bool> UpdateUserAsync(int userId, Profile newUserData);
+        Task<bool> UpdateZwAsync(int langid, int userId);
+        Task<bool> UpdateAsync(int userId, ProfileAndLanguages newUserData);
         Task<Profile> GetUserAsync(int userId);
         Task<List<Profile>> GetAllUsersAsync();
         Task<List<string>> GetAllPLanguagesAsync();

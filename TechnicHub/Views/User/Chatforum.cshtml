@@ -1,29 +1,36 @@
 ﻿@model List<TechnicHub.Models.Chatpost>;
 
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{ var logged = @HttpContextAccessor.HttpContext.Session.GetInt32("logged");}
+
 @{
-    ViewData["Title"] = "View";
-}
-
-
-<div>
-
-    @foreach (Chatpost c in Model)
-    {
-        <p>@c.ChatpostDate</p>
-        <p>@c.ChatpostUser schrieb:</p>
-        <p>@c.ChatpostMessage </p>
-
-        <form action="/user/DeletePost/@c.ChatpostId" method="get">
-            <input type="submit" value="Delete" />
-        </form>
+        ViewData["Title"] = "View";
     }
 
-    <form action="/user/AddPost/" method="get">
-        <input type="submit" value="Add" />
-    </form>
+
+    <div>
+
+        @foreach (Chatpost c in Model)
+        {
+            <p>@c.ChatpostDate</p>
+            <p>@c.ChatpostUser schrieb:</p>
+            <p>@c.ChatpostMessage </p>
+
+            @if (logged == 1) { }
+            <form action="/user/DeletePost/@c.ChatpostId" method="get">
+                <input type="submit" value="Delete" />
+            </form>
+            }
+        }
+
+        @if(logged == 1) { }
+        <form action="/user/AddPost/" method="get">
+            <input type="submit" value="Add" />
+        </form>
+        }
 
 
 
-
-</div> 
+    </div>
 

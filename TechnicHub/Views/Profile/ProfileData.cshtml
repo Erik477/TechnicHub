@@ -11,7 +11,7 @@
                 Your Data
             </th>
         </tr>
-        <br />
+        
     </thead>
     <tbody>      
             <tr> 
@@ -47,12 +47,12 @@
                 }
             </tr>
             <td>
-                <form action="/user/delete/@Model.Profile.UserId" method="get">
+                <form action="/profile/delete/@Model.Profile.UserId" method="get">
                     <input type="submit" value="löschen" />
                 </form>
             </td>
             <td>
-                <form action="/user/update/@Model.Profile.UserId" method="get">
+                <form action="/profile/updateProfile/@Model.Profile.UserId" method="get">
                     <input type="submit" value="ändern" />
                 </form>
             </td>

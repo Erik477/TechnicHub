@@ -1,5 +1,9 @@
 ﻿@model List<TechnicHub.Models.Chatroom>;
 
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{ var logged = @HttpContextAccessor.HttpContext.Session.GetInt32("logged");}
+
 @{
     ViewData["Title"] = "Chatroom List";
 }
@@ -24,49 +28,55 @@
             </tr>
             @foreach (Chatroom c in Model)
             {
-        <tr>
-            <td>@c.Id</td>
-            <td>@c.Name</td>
-            <td>@c.Description</td>
-            <td>@c.MessageCount</td>
-            <td>
-                <form action="/user/Chatforum/@c.Id" method="get">
-                    <input type="submit" value="Join" />
-                </form>
-            </td>
-            <td>
-                <form action="/user/deleteroom/@c.Id" method="get">
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
-        </tr>
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.Name</td>
+                    <td>@c.Description</td>
+                    <td>@c.MessageCount</td>
+                    <td>
+                        @if(logged == 1) { 
+                        <form action="/user/Chatforum/@c.Id" method="get">
+                            <input type="submit" value="Join" />
+                        </form>
+                        }
+                    </td>
+                    <td>
+                        @if(logged ==1){
+                        <form action="/user/deleteroom/@c.Id" method="get">
+                            <input type="submit" value="Delete" />
+                        </form>
+                        }
+                    </td>
+                </tr>
             }
-            </tbody>
-</table>
-       
-       
-    
+        </tbody>
+    </table>
 
 
-        <form action="/user/addChatroom" method="get">
-            <input type="submit" value="Add" />
-        </form>
-    
+
+
+    @if (logged == 1)
+    {
+    <form action="/user/addChatroom" method="get">
+        <input type="submit" value="Add" />
+    </form>
+    }
 
 </div>
 
-<br /><br />
+<br />
+<br />
 
 
-@*<p> 
+@*<p>
         <label asp-for="ChatpostMessage"> Nachricht</label> <br />
         <input type="text" asp-for="ChatpostMessage" />
-        <span asp-validation-for="ChatpostMessage"></span>  
-       
+        <span asp-validation-for="ChatpostMessage"></span>
+
         <input type="submit" value="Senden" />
 
     </p>*
-    
+
     @* <p>@Model.ChatpostUser schrieb: </p>
     <br/>
     <p>@Model.ChatpostMessage</p>*@
