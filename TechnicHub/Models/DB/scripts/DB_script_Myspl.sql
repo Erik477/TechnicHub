@@ -105,6 +105,12 @@ insert into posts values(null, "Cooles Projekt","2004-01-10",1,1);
 */
  use technichub;  
 
+insert into zwtable values(1,2);
+insert into zwtable values(2,3);
+insert into zwtable values(3,4);
+insert into zwtable values(4,5);
+insert into zwtable values(5,3);
+
 select * from zwtable;
 
 /*

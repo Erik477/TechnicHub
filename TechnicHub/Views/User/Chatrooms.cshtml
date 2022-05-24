@@ -34,7 +34,7 @@
                     <td>@c.Description</td>
                     <td>@c.MessageCount</td>
                     <td>
-                        @if(logged == 1) { 
+                       @if(logged == 1) { 
                         <form action="/user/Chatforum/@c.Id" method="get">
                             <input type="submit" value="Join" />
                         </form>
@@ -42,7 +42,7 @@
                     </td>
                     <td>
                         @if(logged ==1){
-                        <form action="/user/deleteroom/@c.Id" method="get">
+                        <form action="/user/deleteroom/@c.Id" method="post">
                             <input type="submit" value="Delete" />
                         </form>
                         }

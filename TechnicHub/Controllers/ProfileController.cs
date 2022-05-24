@@ -207,6 +207,7 @@ namespace TechnicHub.Controllers
                 await rep.ConnectAsync();
               
                 Profile p = userDatafromForm.Profile;
+                p.UserId = id;
                 List<string> languages = userDatafromForm.Languages;
                 bool working = await rep.UpdateAsync(id, userDatafromForm);
                 if (working)

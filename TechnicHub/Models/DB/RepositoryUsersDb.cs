@@ -13,7 +13,7 @@ namespace TechnicHub.Models.DB
     // diese Klasse implementiert unser Interface
     public class RepositoryUsersDB : IRepositoryUsers
     {
-        private string _connString = "Server=localhost;database=technichub;user=root;password=12345";
+        private string _connString = "Server=localhost;database=technichub;user=root;password=admin";
 
         private DbConnection _conn;
 
@@ -645,7 +645,7 @@ namespace TechnicHub.Models.DB
             return await cmdUpdate.ExecuteNonQueryAsync() == 1;
         }
         public async Task<bool> UpdateAsync(int userId, ProfileAndLanguages newUserData)
-         {
+        {
         if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
         {
             return false;
@@ -656,23 +656,29 @@ namespace TechnicHub.Models.DB
         if (user)
         {
             bool zw = false;
-        int user_id = await GetUserIdAsync(newUserData.Profile.Username);
-       
+            int user_id = await GetUserIdAsync(newUserData.Profile.Username);
 
-            foreach (string s in newUserData.Languages)
+                if (newUserData.Languages != null)
+                {
+                    foreach (string s in newUserData.Languages)
+                    {
+                        int lang_id = await GetLanguageIdAsync(s); // Da kömma jetzt doch s sagen statt pl.languages 
+
+                        Console.WriteLine(newUserData.Languages.ToString());
+                        zw = await UpdateZwAsync(lang_id, user_id);
+                    }
+                    return zw;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
             {
-                int lang_id = await GetLanguageIdAsync(s); // Da kömma jetzt doch s sagen statt pl.languages 
-
-        Console.WriteLine(newUserData.Languages.ToString());
-                zw = await UpdateZwAsync(lang_id, user_id);
-    }
-            return zw;
+                return false;
+            }
         }
-        else
-        {
-    return false;
-    }
-    }
 
         public async Task<bool> UpdateZwAsync(int lang_id, int user_id)
         {
@@ -683,7 +689,7 @@ namespace TechnicHub.Models.DB
 
 
             DbCommand cmdUpdate = this._conn.CreateCommand();
-            cmdUpdate.CommandText = "update zwtable set plang_id = @PLang_id where user_id = @user_id";
+            cmdUpdate.CommandText = "insert into zwtable values (@user_id, @Plang_id)";
 
             DbParameter paramUserId = cmdUpdate.CreateParameter();
             paramUserId.ParameterName = "user_id";

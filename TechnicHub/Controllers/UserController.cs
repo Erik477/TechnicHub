@@ -82,7 +82,7 @@ namespace TechnicHub.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> DeleteRoom(int chatroom_id)
         {
             try
