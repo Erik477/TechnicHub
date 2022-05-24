@@ -17,16 +17,16 @@
             <p>@c.ChatpostUser schrieb:</p>
             <p>@c.ChatpostMessage </p>
 
-            @if (logged == 1) { }
+            @if (logged == 1) {
             <form action="/user/DeletePost/@c.ChatpostId" method="get">
                 <input type="submit" value="Delete" />
             </form>
             }
         }
 
-        @if(logged == 1) { }
-        <form action="/user/AddPost/" method="get">
-            <input type="submit" value="Add" />
+        @if(logged == 1) {
+        <form action="/user/AddPost" method="get">
+            <input type="submit" value="Add Post" />
         </form>
         }
 

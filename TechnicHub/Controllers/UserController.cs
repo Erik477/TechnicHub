@@ -54,35 +54,22 @@ namespace TechnicHub.Controllers
         int chatroom;
 
 
-        [HttpGet]
-        public async Task<IActionResult> Chatforum(int chatroom_id)
+        public async Task<IActionResult> Chatforum(int id)
         {
-            try
-            {
+           
                 await rep.ConnectAsync();
-                List<Chatpost> posts = await rep.GetPostsAsync(chatroom_id);
-                chatroom = chatroom_id;
+                List<Chatpost> posts = await rep.GetPostsAsync(id);
+                chatroom = id;
                 if (posts != null)
                 {
                     // alle User an die View übergeben
                     return View(posts);
                 }
-                else
-                {
-                    return View("_Message", new Message("Datenbankfehler", "Keine Verbindung zur Datenbank!", "Versuchen sie es später ernuet!"));
-                }
-            }
-            catch (DbException)
-            {
-                return View("_Message", new Message("Datenbankfehler", "Datenbankprobleme", "Versuchen sie es später ernuet!"));
-            }
-            finally
-            {
-                await rep.DisconnectAsync();
-            }
+              
+                return View();
         }
 
-        [HttpPost]
+    
         public async Task<IActionResult> DeleteRoom(int chatroom_id)
         {
             try
@@ -178,7 +165,7 @@ namespace TechnicHub.Controllers
                     await rep.ConnectAsync();
                     if (await rep.InsertPostAsync(post,UserId))
                     {
-                        return View();
+                        return RedirectToAction("Chatrooms");
                     }
                     else
                     {

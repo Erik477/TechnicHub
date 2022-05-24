@@ -3,33 +3,33 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="login">
-    <h3>LogIn</h3>
+<div class="center">
+    <div class="login">
+        <h3>LogIn</h3>
 
-    <!--- asp-controller ... an welchen Controller soll das Formular gesendet werden
-     asp-action ... an welche Methode in diesem Controller
-        Formulare werden zu 99% oer post versendet
-        -->
-    <form asp-controller="profile" asp-action="login" method="post">
-        <p>
-            <label asp-for="Username"> Username</label> <br />
-            <input type="string" asp-for="Username" />
-        </p>
-
-        
-        <p>
-            <label asp-for="Password">Password</label> <br />
-            <input type="password" asp-for="Password" />
-        </p>
+        <!--- asp-controller ... an welchen Controller soll das Formular gesendet werden
+         asp-action ... an welche Methode in diesem Controller
+            Formulare werden zu 99% oer post versendet
+            -->
+        <form asp-controller="profile" asp-action="login" method="post">
+            <p>
+                <label asp-for="Username"> Username</label> <br />
+                <input type="text" asp-for="Username" />
+            </p>
 
 
-        <p>
-            <input class="btn btn-primary btn-group" type="submit" value='absenden' />
+            <p>
+                <label asp-for="Password">Password</label> <br />
+                <input type="password" asp-for="Password" />
+            </p>
 
-            <inout type="reset" value='abbrechen' />
-        </p>
 
-        
-    </form>
+            <p>
+                <input class="btn btn-primary btn-group" type="submit" value='Login' />
+            </p>
 
+
+        </form>
+
+    </div>
 </div>

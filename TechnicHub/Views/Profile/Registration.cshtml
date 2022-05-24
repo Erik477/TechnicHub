@@ -5,75 +5,94 @@
 }
 
 
-<h3>Registration</h3>
+
 
 <!--- asp-controller ... an welchen Controller soll das Formular gesendet werden
  asp-action ... an welche Methode in diesem Controller
     Formulare werden zu 99% oer post versendet
     -->
-<form asp-controller="profile" asp-action="Registration" method="post">
-    <p>
-        <label asp-for="Profile.Username"> Benutzername</label> <br />
-        <input type="text" asp-for="Profile.Username" />
-        <span asp-validation-for="Profile.Username"></span>
-    </p>
-    <p>
-        <label asp-for="Profile.Password"> Password</label> <br/>
-        <input type="password" asp-for="Profile.Password" />
-        <span asp-validation-for="Profile.Password"></span>
-    </p>
-    <p>
-        <label asp-for="Profile.Birthdate"> Geburtsdatum</label> <br />
-        <input type="date" asp-for="Profile.Birthdate" />
-        <span asp-validation-for="Profile.Birthdate"></span>
-    </p>
-    <p>
-        <label asp-for="Profile.EMail"> E-Mail</label> <br />
-        <input type="email" asp-for="Profile.EMail" />
-    </p>
-    <p>
-        <label asp-for="Profile.Gender"> Geschlecht</label> <br />
 
-        <select asp-for="Profile.Gender">
-            <option value="0">männlich</option>
-            <option value="1">weiblich</option>
-            <option value="2">nicht Angegeben!</option>
-        </select>
-    </p>
+<div class="center">
+   
+    <div class="login">
+        <h2>Registration</h2>
+        <form asp-controller="profile" asp-action="Registration" method="post">
+            <p>
+                <label asp-for="Profile.Username"> Benutzername</label> <br />
+                <input type="text" asp-for="Profile.Username" />
+                <span asp-validation-for="Profile.Username"></span>
+            </p>
+            <p>
+                <label asp-for="Profile.Password"> Password</label> <br />
+                <input type="password" asp-for="Profile.Password" />
+                <span asp-validation-for="Profile.Password"></span>
+            </p>
+            <p>
+                <label asp-for="Profile.Birthdate"> Geburtsdatum</label> <br />
+                <input type="date" asp-for="Profile.Birthdate" />
+                <span asp-validation-for="Profile.Birthdate"></span>
+            </p>
+            <p>
+                <label asp-for="Profile.EMail"> E-Mail</label> <br />
+                <input type="email" asp-for="Profile.EMail" />
+            </p>
+            <p>
+                <label asp-for="Profile.Gender"> Geschlecht</label> <br />
 
-    <p>
-        @* Hinzufügen der verschiedenen programmiersprachen zum Auswählen bei der Registrierung--> *@
-        
-        @*Languages is a Liste also bei der checkbox müssma da mit einer foreach durchgehen*@
-        @foreach (string p in Model.Languages)
-        {
-            <input type="checkbox"  value ="@p.ToString()" name = "Languages">@p
-            <!--<label asp-for="Languages">@p</label>-->
-                <br />
-        }
+                <select asp-for="Profile.Gender">
+                    <option value="0">männlich</option>
+                    <option value="1">weiblich</option>
+                    <option value="2">nicht Angegeben!</option>
+                </select>
+            </p>
 
+            <p>
 
+            <p>Experience in...</p>
+            @* Hinzufügen der verschiedenen programmiersprachen zum Auswählen bei der Registrierung--> *@
 
-        @*<select asp-for=" pLanguage">
-            <option value="0">JAVA</option>
-            <option value="1">Python</option>
-            <option value="2">Mysql</option>
-            <option value="3">JavaScript</option>
-            <option value="4">C++</option>
-            <option value="5">C#</option>
-            <option value="6">Rust</option>
-            <option value="7">Kotlin</option>
-            <option value="8">Not specified</option>
-        </select>*@
-    </p>
-
-    <p>
-        <input class="btn btn-primary btn-group" type="submit" value='absenden' />
-        <input class="btn btn-primary btn-group" type="reset" value='abbrechen' />
-    </p>
+            @*Languages is a Liste also bei der checkbox müssma da mit einer foreach durchgehen*@
 
 
-    
-</form>
+            @foreach (string p in Model.Languages)
+            {
+
+
+                <div class="lang">
+                    <table>
+
+                        <tr>
+                            <td>  <input type="checkbox" value="@p.ToString()" name="Languages">@p</td>
+
+                        </tr>
+                    </table>
+                </div>
+
+
+            }
+
+            @*<select asp-for=" pLanguage">
+                <option value="0">JAVA</option>
+                <option value="1">Python</option>
+                <option value="2">Mysql</option>
+                <option value="3">JavaScript</option>
+                <option value="4">C++</option>
+                <option value="5">C#</option>
+                <option value="6">Rust</option>
+                <option value="7">Kotlin</option>
+                <option value="8">Not specified</option>
+            </select>*@
+            </p>
+
+            <p>
+                <input class="btn btn-primary btn-group" type="submit" value='Register' />
+
+            </p>
+
+
+
+        </form>
+    </div>
+</div>
 
  <script src="~/js/registration.js" asp-append-version="true"></script>

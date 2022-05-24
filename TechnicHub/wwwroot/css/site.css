@@ -10,37 +10,32 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
-    background-color: #FFA31A;
-    color: #808080;
+    font-weight: bold;
+    font-size: 40px;
+    color: #FFA31A;
     margin: 0 auto;
+    -webkit-animation: glow 1s ease-in-out infinite alternate;
+    -moz-animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 1s ease-in-out infinite alternate;
 }
-.logo:hover{
-    color: white;
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    }
+
+    to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    }
 }
 
-.a {
-    color: #FFA31A;
-}
 
-a {
-    color: #FFA31A;
-}
 
- a:hover {
-        color: #808080;
- }
 
 title {
     color: #292929;
 }
 
-.btn-primary, .btn-primary::after, .btn-primary:active {
-    color: #FFA31A; /*Hellgrau*/
-    /* background-color: #292929; Dunkelgrau*/
-    background-color: #FFA31A;
-    border-color: #808080;
-    text-align: center;
-}
+
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
@@ -48,9 +43,6 @@ title {
   border-color: #1861ac;
 }
 
-.btn-group:hover, .btn-group:active {
-    background-color: #FFA31A;
-}
 
 
 
@@ -108,6 +100,7 @@ body {
     margin: 10px;
 }
 
+
 .profile_pic {
     height: 80px;
     width: 80px;
@@ -124,8 +117,7 @@ body {
 .login {
     border: 5px solid #565050;
     text-align: center;
-    background-color: rgba(51, 49, 50, 0.69);
-    position: absolute;
+    background-color: #292929;
 }
     .login input {
         border-radius: 5px;
@@ -139,3 +131,21 @@ body {
     .redBorder{
         border: 2px solid red;
     }
+.center{
+    margin: 0 auto;
+    width: 30%;
+    
+}
+
+
+
+.lang input {
+    border-radius: 5px;
+    width: 50px;
+}
+
+.homeContent {
+    border: 2px solid black;
+    background-color: #292929;
+    padding: 10px;
+}

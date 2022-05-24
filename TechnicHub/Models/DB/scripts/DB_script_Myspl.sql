@@ -54,6 +54,8 @@ CONSTRAINT zwTable_unique UNIQUE (Plang_id,user_id)
 );
 
 
+
+
 select * from zwTable;
 
 
@@ -62,7 +64,7 @@ create table posts(
 	PostId int not null auto_increment,
 	Message varchar(3000) not null,
 	Post_date  date null,
-	UserId varchar(256) not null,
+	UserId int not null,
 	chatroomId int not null,
 	constraint PostId_pk primary key(PostId)
 );

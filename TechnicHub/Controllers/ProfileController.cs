@@ -96,7 +96,7 @@ namespace TechnicHub.Controllers
             await rep.ConnectAsync();
             return await rep.GetAllPLanguagesAsync();
 
-            await rep.DisconnectAsync();
+          
               
             
         }
@@ -203,23 +203,34 @@ namespace TechnicHub.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProfile(int id, ProfileAndLanguages userDatafromForm)
         {
-
+            try { 
                 await rep.ConnectAsync();
               
                 Profile p = userDatafromForm.Profile;
                 p.UserId = id;
                 List<string> languages = userDatafromForm.Languages;
-                bool working = await rep.UpdateAsync(id, userDatafromForm);
-                if (working)
-                {
-                    return View("_Message", new Message("Update", "User wurde erfolgreich aktualisiert!"));
+            
+               if(  await rep.UpdateAsync(id, userDatafromForm))
+              {
+                    return View("_Message", new Message("Update erfolgreich", "User wurde bearbeitet!", ""));
                 }
                 else
                 {
-                    return View("_Message", new Message("Update", "User konnte nicht aktualisiert werden!"));
+                    return View("_Message", new Message("Update nicht erfolgreich", "User konnte nicht bearbeitet werden", "Versuchen sie später erneut!"));
+
                 }
-            await rep.DisconnectAsync();
-            
+            }
+            catch (DbException)
+            {
+                return View("_Message", new Message("Datenbankfehler", "Keine Verbindung zur Datenbank!", "Versuchen sie es später ernuet!"));
+            }
+            finally
+            {
+                await rep.DisconnectAsync();
+            }
+
+       
+            return View();
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -227,11 +238,17 @@ namespace TechnicHub.Controllers
             try
             {
                 await rep.ConnectAsync();
-                bool working =  await rep.DeleteZwAsync(id) && await rep.DeleteUserAsync(id);
-                if (working)
-                {
+                bool working =  await rep.DeleteZwAsync(id);
+                if (working) {
+
+                    bool working1 = await rep.DeleteUserAsync(id);
                     HttpContext.Session.SetInt32("logged", 0);
                     HttpContext.Session.SetString("loggedUser", "");
+                    if (!working1)
+                    {
+                        return View("_Message", new Message("Löschungsfehler", "User konnte nicht gelöscht werden", "Versuchen sie später erneut!"));
+                        
+                    }
                     return View("_Message", new Message("Löschung", "User Löschung war erfolgreich"));
                 }
                 else
@@ -279,11 +296,7 @@ namespace TechnicHub.Controllers
                     {
                         ModelState.AddModelError("EMail", "Die E-Mail Adresse ist ungültig!");
                     }
-                    //Gender
-                    if(p.Profile.Gender == null)
-                    {
-                        ModelState.AddModelError("Gender","Sie müssen ein Gener auswählen! Ich weiß es ist schwer :)"); 
-                    }                    
+                                    
                     //Languages
                     if (p.Languages.Count == 0)
                     {

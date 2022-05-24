@@ -13,50 +13,52 @@
         </tr>
         
     </thead>
-    <tbody>      
-            <tr> 
-                <th>User Id </th>
-                <td>@Model.Profile.UserId</td>
-            </tr>
-           
-    
-            <tr>
-                <th>Username</th> 
-                <td>@Model.Profile.Username</td>
-            </tr>
- 
-            <tr>
-                <th>Birth-Date</th>
-                <td>@Model.Profile.Birthdate.ToLongDateString()</td>
-            </tr>
-            
-            <tr>
-             <th>Gender</th>
-                <td>@Model.Profile.Gender</td>
-                
-            </tr>
-            <tr>
-            <th>Mail</th> 
-                <td>@Model.Profile.EMail</td>
-           </tr>
-            <tr>
-                <th> Programming Languages</th>
-                @foreach (string s in Model.Languages)
-                {
-                       <tr> <td>@s</td> </tr>
-                }
-            </tr>
-            <td>
-                <form action="/profile/delete/@Model.Profile.UserId" method="get">
-                    <input type="submit" value="löschen" />
-                </form>
-            </td>
-            <td>
-                <form action="/profile/updateProfile/@Model.Profile.UserId" method="get">
-                    <input type="submit" value="ändern" />
-                </form>
-            </td>
+    <tbody>
+        <tr>
+            <th>User Id </th>
+            <td>@Model.Profile.UserId</td>
+        </tr>
 
+
+        <tr>
+            <th>Username</th>
+            <td>@Model.Profile.Username</td>
+        </tr>
+
+        <tr>
+            <th>Birth-Date</th>
+            <td>@Model.Profile.Birthdate.ToLongDateString()</td>
+        </tr>
+
+        <tr>
+            <th>Gender</th>
+            <td>@Model.Profile.Gender</td>
+
+        </tr>
+        <tr>
+            <th>Mail</th>
+            <td>@Model.Profile.EMail</td>
+        </tr>
+        <tr>
+            <
+            <th> Programming Languages</th>
+            @foreach (string s in Model.Languages)
+            {
+            <tr> <td>@s</td> </tr>
+              }
+        </tr>
+    <tr>
+        <td>
+            <form action="/profile/delete/@Model.Profile.UserId" method="get">
+                <input type="submit" value="löschen" />
+            </form>
+        </td>
+        <td>
+            <form action="/profile/updateProfile/@Model.Profile.UserId" method="get">
+                <input type="submit" value="ändern" />
+            </form>
+        </td>
+    </tr>
         
     </tbody>
 
