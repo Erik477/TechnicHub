@@ -10,25 +10,27 @@
  asp-action ... an welche Methode in diesem Controller
     Formulare werden zu 99% oer post versendet
     -->
-<form asp-controller="User" asp-action="AddChatroom" method="post">
-    <p>
-        <label asp-for="Name"> Chatroom-Name</label> <br />
-        <input type="text" asp-for="Name" />
-        <span asp-validation-for="Name"></span>
-    </p>
-    <p>
-        <label asp-for="Description"> Room description</label> <br />
-        <input type="text" asp-for="Description" />
-        <span asp-validation-for="Description"></span>
-    </p>
-    
 
-    <p>
-        <input class="btn btn-primary btn-group" type="submit" value='absenden' />
-        <input class="btn btn-primary btn-group" type="reset" value='abbrechen' />
-    </p>
+<div class="login">
+    <form asp-controller="User" asp-action="AddChatroom" method="post">
+        <p>
+            <label asp-for="Name"> Chatroom-Name</label> <br />
+            <input type="text" asp-for="Name" />
+            <span asp-validation-for="Name"></span>
+        </p>
+        <p>
+            <label asp-for="Description"> Room description</label> <br />
+            <input type="text" asp-for="Description" />
+            <span asp-validation-for="Description"></span>
+        </p>
 
 
+        <p>
+            <input class="btn btn-primary btn-group" type="submit" value='Add' />
+            <input class="btn btn-primary btn-group" type="reset" value='abbrechen' />
+        </p>
 
-</form>
 
+
+    </form>
+</div>

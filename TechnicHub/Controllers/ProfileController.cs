@@ -320,6 +320,26 @@ namespace TechnicHub.Controllers
             {
                 ModelState.AddModelError("Password", "Das Passwort muss mindestens 8 Zeichen lang sein!");
             }
+
+            if ((p.EMail == null) )
+            {
+                ModelState.AddModelError("Email", "Eine Email wird benötigt!");
+            }
+        }
+
+        public IActionResult CheckEMail(string email)
+        {
+            //mit DB verbinden und überprüfen, ob Mail vorhanden
+            if (email == "pedro@gmx.at")
+            {
+                //Rückgabewert nach JSON konvertieren
+                // hier kann auch z.B. die Instant einer Klasse übergeben werden
+                return new JsonResult(true);
+            }
+            else
+            {
+                return new JsonResult(false);
+            }
         }
 
     }

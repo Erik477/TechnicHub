@@ -38,9 +38,9 @@ title {
 
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #292929;
+    border-color: #1861ac;
 }
 
 
@@ -148,4 +148,33 @@ body {
     border: 2px solid black;
     background-color: #292929;
     padding: 10px;
+}
+
+.nextTo {
+    float: left;
+    display: inline;
+}
+
+.msg {
+    border: 2px solid black;
+    color: white;
+    background-color: #292929;
+    padding: 10px;
+}
+
+.chatpost {
+    padding: 5px;
+    border: 5px solid black;
+    color: white;
+    background-color: #292929;
+    
+    margin: 20px;
+   
+}
+.chatpostHeader{
+    border-bottom: 1px solid black;
+}
+
+.redBorder{
+
 }

@@ -11,7 +11,7 @@ namespace TechnicHub.Models
         public int ChatpostId { get; set; }
         public string ChatpostMessage { get; set; }
         public DateTime ChatpostDate { get; set; }
-        public string ChatpostUser { get; set; }
+        public int ChatpostUser { get; set; }
         public int ChatroomId { get; set; }
         
     }

@@ -496,8 +496,8 @@ namespace TechnicHub.Models.DB
             {
                 return MsgList;
             }
-            int ChatpostUserId = 0;
-            Profile user;
+           // int ChatpostUserId = 0;
+           // Profile user;
 
             DbCommand cmdSelect = this._conn.CreateCommand();
             cmdSelect.CommandText = "select * from posts where chatroomID = @chatroom_id";
@@ -519,24 +519,12 @@ namespace TechnicHub.Models.DB
                 msg.ChatpostId = (int)reader["PostId"];
                 msg.ChatpostMessage = (string)reader["Message"];
                 msg.ChatpostDate = (DateTime)reader["Post_date"];
-                ChatpostUserId = (int)reader["UserId"];
-   
-                
-            
-            }
-            user = await GetUserAsync(ChatpostUserId);
-            await ConnectAsync();
-            reader = await cmdSelect.ExecuteReaderAsync();
-
-            while (reader.Read())
-            {
-                msg.ChatpostUser = user.Username;
+                msg.ChatpostUser = (int)reader["UserId"];
                 msg.ChatroomId = (int)reader["chatroomId"];
-
                 MsgList.Add(msg);
+
             }
-
-
+          
                 return MsgList;
         }
         public async Task<List<Chatroom>> GetRoomsAsync()
@@ -592,8 +580,8 @@ namespace TechnicHub.Models.DB
             paramPostId.Value = id;
 
             cmdDelete.Parameters.Add(paramPostId);
-
-            return await cmdDelete.ExecuteNonQueryAsync() == 1;
+            int res = await cmdDelete.ExecuteNonQueryAsync();
+            return res == 1;
         }
         public async Task<bool> DeleteRoomAsync(int id)
         {
@@ -612,7 +600,8 @@ namespace TechnicHub.Models.DB
 
             cmdDelete.Parameters.Add(paramChatroomId);
 
-            return await cmdDelete.ExecuteNonQueryAsync() == 1;
+            int res = await cmdDelete.ExecuteNonQueryAsync();
+            return res == 1;
         }
 
         public async Task<bool> UpdateUserAsync(int userId, Profile newUserData)

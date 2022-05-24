@@ -9,25 +9,32 @@
     }
 
 
-    <div>
+<div>
 
-        @foreach (Chatpost c in Model)
+
+    @foreach (Chatpost c in Model)
+    {
+    <div class="chatpost">
+        <p class="chatpostHeader">@c.ChatpostUser, am @c.ChatpostDate</p>
+        <p>@c.ChatpostMessage </p>
+
+        @if (logged == 1)
         {
-            <p>@c.ChatpostDate</p>
-            <p>@c.ChatpostUser schrieb:</p>
-            <p>@c.ChatpostMessage </p>
-
-            @if (logged == 1) {
             <form action="/user/DeletePost/@c.ChatpostId" method="get">
                 <input type="submit" value="Delete" />
             </form>
-            }
         }
+    </div>
+            }
+      
 
-        @if(logged == 1) {
-        <form action="/user/AddPost" method="get">
-            <input type="submit" value="Add Post" />
-        </form>
+
+        <br />
+        @if (logged == 1)
+        {
+            <form action="/user/AddPost" method="get">
+                <input type="submit" value="Add Post" />
+            </form>
         }
 
 

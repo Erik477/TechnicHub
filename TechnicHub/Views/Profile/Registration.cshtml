@@ -35,6 +35,7 @@
             <p>
                 <label asp-for="Profile.EMail"> E-Mail</label> <br />
                 <input type="email" asp-for="Profile.EMail" />
+                <span id = "email_massage" asp-validation-for="Profile.Birthdate"></span>
             </p>
             <p>
                 <label asp-for="Profile.Gender"> Geschlecht</label> <br />

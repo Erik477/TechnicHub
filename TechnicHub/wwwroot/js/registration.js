@@ -12,7 +12,7 @@ $(document).ready(() => {
     $("#EMail").blur(() => {
         //die engegebene Mail adresse an den Server senden und überprüfen ob die Adresse existiert (gescxhieht über AJAX)
         $.ajax({
-            url: "/user/checkEMail",
+            url: "/profile/checkEMail",
             method: "GET",
             data: { email: $("#EMail").val() }
         })

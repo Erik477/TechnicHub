@@ -58,6 +58,15 @@ CONSTRAINT zwTable_unique UNIQUE (Plang_id,user_id)
 
 select * from zwTable;
 
+create table ImageToDB(
+id int not null autp_increment,
+image_name varchar(100) not null,
+user_id int not null,
+image varchar(100)
+constraint image_id primary key(id)
+
+);
+
 
 
 create table posts(

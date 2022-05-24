@@ -70,13 +70,13 @@ namespace TechnicHub.Controllers
         }
 
     
-        public async Task<IActionResult> DeleteRoom(int chatroom_id)
+        public async Task<IActionResult> DeleteRoom(int id)
         {
             try
             {
                 
                 await rep.ConnectAsync();
-                if (await rep.DeleteRoomAsync(chatroom_id))
+                if (await rep.DeleteRoomAsync(id))
                 {
                     return View("_Message", new Message("Löschung", "Room Löschung war erfolgreich"));
                 }
@@ -165,7 +165,7 @@ namespace TechnicHub.Controllers
                     await rep.ConnectAsync();
                     if (await rep.InsertPostAsync(post,UserId))
                     {
-                        return RedirectToAction("Chatrooms");
+                        return View("_Message", new Message("Chatroom", "Post wurde hinzugefügt!", ""));
                     }
                     else
                     {
@@ -184,6 +184,31 @@ namespace TechnicHub.Controllers
             return View(post);
         }
 
+        public async Task<IActionResult> DeletePost(int ChatpostId)
+        {
+            try
+            {
+
+                await rep.ConnectAsync();
+                if (await rep.DeletePostAsync(ChatpostId))
+                {
+                    return View("_Message", new Message("Löschung", "Post Löschung war erfolgreich"));
+                }
+                else
+                {
+                    return View("_Message", new Message("Löschungsfehler", "Post konnte nicht gelöscht werden", "Versuchen sie später erneut!"));
+
+                }
+            }
+            catch (DbException)
+            {
+                return View("_Message", new Message("Datenbankfehler", "Keine Verbindung zur Datenbank!", "Versuchen sie es später ernuet!"));
+            }
+            finally
+            {
+                await rep.DisconnectAsync();
+            }
+        }
         public IActionResult Newsletter()
         {
             return View();

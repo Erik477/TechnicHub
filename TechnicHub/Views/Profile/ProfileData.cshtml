@@ -4,14 +4,14 @@
     ViewData["Title"] = "Profil";
 }
 
-<table>
+<table class="table table-dark">
     <thead>
         <tr>
             <th colspan="7">
                 Your Data
             </th>
         </tr>
-        
+
     </thead>
     <tbody>
         <tr>
@@ -40,27 +40,35 @@
             <td>@Model.Profile.EMail</td>
         </tr>
         <tr>
-            <
+
             <th> Programming Languages</th>
+            @{ string lang = "";}
             @foreach (string s in Model.Languages)
             {
-            <tr> <td>@s</td> </tr>
-              }
+                lang += s + ", ";
+
+
+            }
+            <td>@lang</td>
         </tr>
-    <tr>
-        <td>
-            <form action="/profile/delete/@Model.Profile.UserId" method="get">
-                <input type="submit" value="löschen" />
-            </form>
-        </td>
-        <td>
-            <form action="/profile/updateProfile/@Model.Profile.UserId" method="get">
-                <input type="submit" value="ändern" />
-            </form>
-        </td>
-    </tr>
-        
+
+
     </tbody>
 
+
+
+
+
 </table>
+
+
+    <form action="/profile/delete/@Model.Profile.UserId" method="get">
+        <input class="btn btn-primary btn-group" type="submit" value="löschen" />
+    </form>
+
+<br />
+
+    <form action="/profile/updateProfile/@Model.Profile.UserId" method="get">
+        <input class="btn btn-primary btn-group" type="submit" value="ändern" />
+    </form>
 
