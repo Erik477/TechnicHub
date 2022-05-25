@@ -232,7 +232,6 @@ namespace TechnicHub.Controllers
             }
 
        
-            return View();
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -291,7 +290,7 @@ namespace TechnicHub.Controllers
                     //Birthdate
                     if (p.Profile.Birthdate >= DateTime.Now)
                     {
-                        ModelState.AddModelError("Birthdate", "Das Geburtsdatum kann nicht in der Zukunft liegen!   ");
+                        ModelState.AddModelError("Birthdate", "Das Geburtsdatum kann nicht in der Zukunft liegen!");
                     }
                     //Email
                     if ((p.Profile.EMail == null) || (p.Profile.EMail.Contains("@.")))
@@ -300,7 +299,7 @@ namespace TechnicHub.Controllers
                     }
                                     
                     //Languages
-                    if (p.Languages.Count == 0)
+                    if (p.Languages.Count ==1)
                     {
                         ModelState.AddModelError("Languages", "Sie müssen mindestens eine Sprache auswählen!");
                     }

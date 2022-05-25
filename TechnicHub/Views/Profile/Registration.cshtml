@@ -13,7 +13,7 @@
     -->
 
 <div class="center">
-   
+
     <div class="login">
         <h2>Registration</h2>
         <form asp-controller="profile" asp-action="Registration" method="post">
@@ -26,6 +26,7 @@
                 <label asp-for="Profile.Password"> Password</label> <br />
                 <input type="password" asp-for="Profile.Password" />
                 <span asp-validation-for="Profile.Password"></span>
+
             </p>
             <p>
                 <label asp-for="Profile.Birthdate"> Geburtsdatum</label> <br />
@@ -35,7 +36,7 @@
             <p>
                 <label asp-for="Profile.EMail"> E-Mail</label> <br />
                 <input type="email" asp-for="Profile.EMail" />
-                <span id = "email_massage" asp-validation-for="Profile.Birthdate"></span>
+                <span id="email_massage" asp-validation-for="Profile.EMail"></span>
             </p>
             <p>
                 <label asp-for="Profile.Gender"> Geschlecht</label> <br />
@@ -73,16 +74,16 @@
             }
 
             @*<select asp-for=" pLanguage">
-                <option value="0">JAVA</option>
-                <option value="1">Python</option>
-                <option value="2">Mysql</option>
-                <option value="3">JavaScript</option>
-                <option value="4">C++</option>
-                <option value="5">C#</option>
-                <option value="6">Rust</option>
-                <option value="7">Kotlin</option>
-                <option value="8">Not specified</option>
-            </select>*@
+                    <option value="0">JAVA</option>
+                    <option value="1">Python</option>
+                    <option value="2">Mysql</option>
+                    <option value="3">JavaScript</option>
+                    <option value="4">C++</option>
+                    <option value="5">C#</option>
+                    <option value="6">Rust</option>
+                    <option value="7">Kotlin</option>
+                    <option value="8">Not specified</option>
+                </select>*@
             </p>
 
             <p>
@@ -96,4 +97,5 @@
     </div>
 </div>
 
- <script src="~/js/registration.js" asp-append-version="true"></script>
+
+<script src="~/js/registration.js" asp-append-version="true"></script>
