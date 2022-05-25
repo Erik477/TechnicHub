@@ -13,7 +13,7 @@ namespace TechnicHub.Models.DB
     // diese Klasse implementiert unser Interface
     public class RepositoryUsersDB : IRepositoryUsers
     {
-        private string _connString = "Server=localhost;database=technichub;user=root;password=admin";
+        private string _connString = "Server=localhost;database=technichub;user=root;password=12345";
 
         private DbConnection _conn;
 
@@ -45,13 +45,15 @@ namespace TechnicHub.Models.DB
             }
             DbCommand cmdDelete = this._conn.CreateCommand();
 
-            cmdDelete.CommandText = "delete from users where user_id =@id";
-            DbParameter paramId = cmdDelete.CreateParameter();
-            paramId.ParameterName = "id";
-            paramId.DbType = DbType.Int16;
-            paramId.Value = userId;
+            
+                cmdDelete.CommandText = "delete from users where user_id =@id";
+                DbParameter paramId = cmdDelete.CreateParameter();
+                paramId.ParameterName = "id";
+                paramId.DbType = DbType.Int16;
+                paramId.Value = userId;
 
-            cmdDelete.Parameters.Add(paramId);
+                cmdDelete.Parameters.Add(paramId);
+            
             int res = await cmdDelete.ExecuteNonQueryAsync();
             return res == 1;
 
@@ -73,7 +75,7 @@ namespace TechnicHub.Models.DB
 
             cmdDelete.Parameters.Add(paramId);
             int res = await cmdDelete.ExecuteNonQueryAsync();
-            return res == 1;
+            return res != 0;
 
 
         }
@@ -123,6 +125,9 @@ namespace TechnicHub.Models.DB
             cmdGet.Parameters.Add(paramId);
 
             Profile user = null;
+
+            await DisconnectAsync();
+                await ConnectAsync();
             using (DbDataReader reader = await cmdGet.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
@@ -142,6 +147,7 @@ namespace TechnicHub.Models.DB
                 }
 
             }
+            await DisconnectAsync();
             return user;
         }
         public async Task<List<string>> GetLanguagesAsync(int userId)
@@ -268,7 +274,9 @@ namespace TechnicHub.Models.DB
             return result;
         }
         public async Task<int> GetLanguageIdAsync(string Plang_name)
+
         {
+
             DbCommand cmdGet = this._conn.CreateCommand();
             cmdGet.CommandText = "select Plang_id from planguage where Plang_name = @Plang_name";
             DbParameter paramUN = cmdGet.CreateParameter();
@@ -488,8 +496,8 @@ namespace TechnicHub.Models.DB
             {
                 return MsgList;
             }
-            int ChatpostUserId = 0;
-            Profile user = new Profile();
+           // int ChatpostUserId = 0;
+           // Profile user;
 
             DbCommand cmdSelect = this._conn.CreateCommand();
             cmdSelect.CommandText = "select * from posts where chatroomID = @chatroom_id";
@@ -501,23 +509,23 @@ namespace TechnicHub.Models.DB
 
             cmdSelect.Parameters.Add(paramChatroomId);
 
+           
             DbDataReader reader = await cmdSelect.ExecuteReaderAsync();
+            Chatpost msg = new Chatpost();
 
             while (reader.Read())
             {
-                Chatpost msg = new Chatpost();
+               
                 msg.ChatpostId = (int)reader["PostId"];
                 msg.ChatpostMessage = (string)reader["Message"];
                 msg.ChatpostDate = (DateTime)reader["Post_date"];
-                ChatpostUserId = (int)reader["UserId"];
-                user = await GetUserAsync(ChatpostUserId);
-                msg.ChatpostUser = user.Username;
-                msg.ChatroomId = (int)reader["ChatroomId"];
-
+                msg.ChatpostUser = (int)reader["UserId"];
+                msg.ChatroomId = (int)reader["chatroomId"];
                 MsgList.Add(msg);
-            }
 
-            return MsgList;
+            }
+          
+                return MsgList;
         }
         public async Task<List<Chatroom>> GetRoomsAsync()
         {
@@ -572,8 +580,8 @@ namespace TechnicHub.Models.DB
             paramPostId.Value = id;
 
             cmdDelete.Parameters.Add(paramPostId);
-
-            return await cmdDelete.ExecuteNonQueryAsync() == 1;
+            int res = await cmdDelete.ExecuteNonQueryAsync();
+            return res == 1;
         }
         public async Task<bool> DeleteRoomAsync(int id)
         {
@@ -592,7 +600,8 @@ namespace TechnicHub.Models.DB
 
             cmdDelete.Parameters.Add(paramChatroomId);
 
-            return await cmdDelete.ExecuteNonQueryAsync() == 1;
+            int res = await cmdDelete.ExecuteNonQueryAsync();
+            return res == 1;
         }
 
         public async Task<bool> UpdateUserAsync(int userId, Profile newUserData)
@@ -660,12 +669,21 @@ namespace TechnicHub.Models.DB
 
                 if (newUserData.Languages != null)
                 {
-                    foreach (string s in newUserData.Languages)
-                    {
-                        int lang_id = await GetLanguageIdAsync(s); // Da kömma jetzt doch s sagen statt pl.languages 
 
-                        Console.WriteLine(newUserData.Languages.ToString());
-                        zw = await UpdateZwAsync(lang_id, user_id);
+                    bool del = await DeleteZwAsync(userId);
+                    if (del)
+                    {
+                        foreach (string s in newUserData.Languages)
+                        {
+                            int lang_id = await GetLanguageIdAsync(s); // Da kömma jetzt doch s sagen statt pl.languages 
+
+                            Console.WriteLine(newUserData.Languages.ToString());
+
+
+
+                            zw = await UpdateZwAsync(lang_id, user_id);
+
+                        }
                     }
                     return zw;
                 }
@@ -689,22 +707,24 @@ namespace TechnicHub.Models.DB
 
 
             DbCommand cmdUpdate = this._conn.CreateCommand();
-            cmdUpdate.CommandText = "insert into zwtable values (@user_id, @Plang_id)";
+           
+            
+                cmdUpdate.CommandText = "insert into zwtable values(@user_id, @plang_id)";
 
-            DbParameter paramUserId = cmdUpdate.CreateParameter();
-            paramUserId.ParameterName = "user_id";
-            paramUserId.DbType = DbType.Int16;
-            paramUserId.Value = user_id;
+                DbParameter paramUserId = cmdUpdate.CreateParameter();
+                paramUserId.ParameterName = "user_id";
+                paramUserId.DbType = DbType.Int16;
+                paramUserId.Value = user_id;
 
-            DbParameter paramLanguageId = cmdUpdate.CreateParameter();
-            paramLanguageId.ParameterName = "Plang_id";
-            paramLanguageId.DbType = DbType.Int16;
-            paramLanguageId.Value = lang_id;
+                DbParameter paramLanguageId = cmdUpdate.CreateParameter();
+                paramLanguageId.ParameterName = "Plang_id";
+                paramLanguageId.DbType = DbType.Int16;
+                paramLanguageId.Value = lang_id;
 
-            cmdUpdate.Parameters.Add(paramUserId);
-            cmdUpdate.Parameters.Add(paramLanguageId);
+                cmdUpdate.Parameters.Add(paramUserId);
+                cmdUpdate.Parameters.Add(paramLanguageId);
 
-
+            
             return await cmdUpdate.ExecuteNonQueryAsync() == 1;
         }
     }
