@@ -212,6 +212,8 @@ namespace TechnicHub.Controllers
             
                if(  await rep.UpdateAsync(id, userDatafromForm))
               {
+                    HttpContext.Session.SetInt32("logged", 0);
+                    HttpContext.Session.SetString("loggedUser", "");
                     return View("_Message", new Message("Update erfolgreich", "User wurde bearbeitet!", ""));
                 }
                 else
