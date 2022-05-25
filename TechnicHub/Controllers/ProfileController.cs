@@ -212,8 +212,6 @@ namespace TechnicHub.Controllers
             
                if(  await rep.UpdateAsync(id, userDatafromForm))
               {
-                    HttpContext.Session.SetInt32("logged", 0);
-                    HttpContext.Session.SetString("loggedUser", "");
                     return View("_Message", new Message("Update erfolgreich", "User wurde bearbeitet!", ""));
                 }
                 else
@@ -323,7 +321,10 @@ namespace TechnicHub.Controllers
                 ModelState.AddModelError("Password", "Das Passwort muss mindestens 8 Zeichen lang sein!");
             }
 
-           
+            if ((p.EMail == null) )
+            {
+                ModelState.AddModelError("Email", "Eine Email wird benötigt!");
+            }
         }
 
         public IActionResult CheckEMail(string email)
