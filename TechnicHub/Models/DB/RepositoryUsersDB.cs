@@ -75,7 +75,7 @@ namespace TechnicHub.Models.DB
 
             cmdDelete.Parameters.Add(paramId);
             int res = await cmdDelete.ExecuteNonQueryAsync();
-            return res == 1;
+            return res != 0;
 
 
         }
